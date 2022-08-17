@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, useRef } from 'react'
-import Select from 'antd/lib/select'
-
+// import Select from 'antd/lib/select'
+import { MultiSelect } from '@mantine/core'
 import { CustomSelectProps, Clicks } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames, sort } from '../utils'
@@ -162,7 +162,7 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   const clicksRef = useRef<Clicks[]>([])
   const onOptionClick = useCallback(
-    (newValueOption: string) => {
+    (newValueOption: string[]) => {
       if (!readOnly) {
         const doubleClickTimeout = 300
         const clicks = clicksRef.current
@@ -244,41 +244,63 @@ export default function CustomSelect(props: CustomSelectProps) {
   )
 
   return (
-    <Select<string[] | undefined>
-      // Use 'multiple' instead of 'tags‘ mode
-      // cf: Issue #2
-      mode={
-        mode === 'single' && !periodicityOnDoubleClick ? undefined : 'multiple'
-      }
-      allowClear={!readOnly}
-      virtual={false}
-      open={readOnly ? false : undefined}
-      value={stringValue}
-      onClear={onClear}
-      tagRender={renderTag}
-      className={internalClassName}
-      dropdownClassName={dropdownClassNames}
-      options={options}
-      showSearch={false}
-      showArrow={!readOnly}
-      menuItemSelectedIcon={null}
-      dropdownMatchSelectWidth={false}
-      onSelect={onOptionClick}
-      onDeselect={onOptionClick}
-      disabled={disabled}
-      dropdownAlign={
-        (unit.type === 'minutes' || unit.type === 'hours') &&
-        period !== 'day' &&
-        period !== 'hour'
-          ? {
-              // Usage: https://github.com/yiminghe/dom-align
-              // Set direction to left to prevent dropdown to overlap window
-              points: ['tr', 'br'],
-            }
-          : undefined
-      }
-      data-testid={`custom-select-${unit.type}`}
-      {...otherProps}
-    />
+    <>
+      <div>
+        {/* <MultiSelect
+        // Use 'multiple' instead of 'tags‘ mode
+        // cf: Issue #2
+        // mode={
+        //   mode === 'single' && !periodicityOnDoubleClick
+        //     ? undefined
+        //     : 'multiple'
+        // }
+        clearable={!readOnly}
+        // virtual={false}
+        // open={readOnly ? false : undefined}
+        value={stringValue}
+        // onClear={onClear}
+        // tagRender={renderTag}
+        className={internalClassName}
+        // dropdownClassName={dropdownClassNames}
+        data={options}
+        searchable={false}
+        // showArrow={!readOnly}
+        // menuItemSelectedIcon={null}
+        // dropdownMatchSelectWidth={false}
+        onChange={onOptionClick}
+        // onDeselect={onOptionClick}
+        disabled={disabled}
+        // dropdownAlign={
+        //   (unit.type === 'minutes' || unit.type === 'hours') &&
+        //   period !== 'day' &&
+        //   period !== 'hour'
+        //     ? {
+        //         // Usage: https://github.com/yiminghe/dom-align
+        //         // Set direction to left to prevent dropdown to overlap window
+        //         points: ['tr', 'br'],
+        //       }
+        //     : undefined
+        // }
+        data-testid={`custom-select-${unit.type}`}
+        // {...otherProps}
+      /> */}
+        <MultiSelect
+          data={[
+            'React',
+            'Angular',
+            'Svelte',
+            'Vue',
+            'Riot',
+            'Next.js',
+            'Blitz.js',
+          ]}
+          label='Your favorite frameworks/libraries'
+          placeholder='Pick all that you like'
+          defaultValue={['react', 'next']}
+          clearButtonLabel='Clear selection'
+          clearable
+        />
+      </div>
+    </>
   )
 }

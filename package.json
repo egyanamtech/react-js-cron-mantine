@@ -31,6 +31,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",
   "scripts": {
+    "start": "react-scripts start",
     "build": "del dist && npm run build:babel && npm run build:types && npm run build:styles",
     "build:babel": "concurrently \"npm run build:babel:esm\" \"npm run build:babel:cjs\"",
     "build:babel:cjs": "BABEL_ENV=cjs babel --extensions \".ts,.tsx\" --copy-files src --out-dir dist/cjs --presets=@babel/env",
@@ -56,6 +57,15 @@
     "@ant-design/icons": "4.7.0",
     "@babel/cli": "7.17.10",
     "@babel/core": "7.18.5",
+    "@mantine/core": "^5.1.6",
+    "@mantine/dates": "^5.1.6",
+    "@mantine/dropzone": "^5.1.6",
+    "@mantine/form": "^5.1.6",
+    "@mantine/hooks": "^5.1.6",
+    "@mantine/modals": "^5.1.6",
+    "@mantine/notifications": "^5.1.6",
+    "@mantine/rte": "^5.1.6",
+    "@mantine/spotlight": "^5.1.6",
     "@babel/plugin-proposal-export-default-from": "7.17.12",
     "@babel/plugin-transform-typescript": "7.18.4",
     "@storybook/addon-actions": "6.5.9",
@@ -103,6 +113,18 @@
     "coverageReporters": [
       "lcov",
       "json-summary"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }
