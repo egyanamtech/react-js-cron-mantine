@@ -1,10 +1,19 @@
 import React, { useMemo, useCallback, useRef } from 'react'
-import Select from 'antd/lib/select'
-
+// import Select from 'antd/lib/select'
+import {
+  CloseButton,
+  Group,
+  Input,
+  Menu,
+  MultiSelect,
+  TextInput,
+  UnstyledButton,
+} from '@mantine/core'
 import { CustomSelectProps, Clicks } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames, sort } from '../utils'
 import { parsePartArray, partToString, formatValue } from '../converter'
+import Select from 'antd/lib/select'
 
 export default function CustomSelect(props: CustomSelectProps) {
   const {
@@ -27,11 +36,20 @@ export default function CustomSelect(props: CustomSelectProps) {
   } = props
 
   const stringValue = useMemo(() => {
+    console.log(stringValue)
     if (value && Array.isArray(value)) {
       return value.map((value: number) => value.toString())
     }
   }, [value])
+  // const stringLabel = useMemo(() => {
+  //   console.log(stringValue)
+  //   if (value && Array.isArray(value)) {
+  //     return value.map((value: number) => optionsList![value])
+  //   }
+  // }, [value])
+  // console.log(stringLabel)
 
+  console.log(optionsList)
   const options = useMemo(
     () => {
       if (optionsList) {
@@ -163,6 +181,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   const clicksRef = useRef<Clicks[]>([])
   const onOptionClick = useCallback(
     (newValueOption: string) => {
+      console.log(newValueOption)
       if (!readOnly) {
         const doubleClickTimeout = 300
         const clicks = clicksRef.current
@@ -244,41 +263,81 @@ export default function CustomSelect(props: CustomSelectProps) {
   )
 
   return (
-    <Select<string[] | undefined>
-      // Use 'multiple' instead of 'tags‘ mode
-      // cf: Issue #2
-      mode={
-        mode === 'single' && !periodicityOnDoubleClick ? undefined : 'multiple'
-      }
-      allowClear={!readOnly}
-      virtual={false}
-      open={readOnly ? false : undefined}
-      value={stringValue}
-      onClear={onClear}
-      tagRender={renderTag}
-      className={internalClassName}
-      dropdownClassName={dropdownClassNames}
-      options={options}
-      showSearch={false}
-      showArrow={!readOnly}
-      menuItemSelectedIcon={null}
-      dropdownMatchSelectWidth={false}
-      onSelect={onOptionClick}
-      onDeselect={onOptionClick}
-      disabled={disabled}
-      dropdownAlign={
-        (unit.type === 'minutes' || unit.type === 'hours') &&
-        period !== 'day' &&
-        period !== 'hour'
-          ? {
-              // Usage: https://github.com/yiminghe/dom-align
-              // Set direction to left to prevent dropdown to overlap window
-              points: ['tr', 'br'],
-            }
-          : undefined
-      }
-      data-testid={`custom-select-${unit.type}`}
-      {...otherProps}
-    />
+    <>
+      {console.log(stringValue)}
+      <Select<string[] | undefined>
+        // Use 'multiple' instead of 'tags‘ mode
+        // cf: Issue #2
+        mode={
+          mode === 'single' && !periodicityOnDoubleClick
+            ? undefined
+            : 'multiple'
+        }
+        allowClear={!readOnly}
+        virtual={false}
+        open={readOnly ? false : undefined}
+        value={stringValue}
+        onClear={onClear}
+        tagRender={renderTag}
+        className={internalClassName}
+        dropdownClassName={dropdownClassNames}
+        options={options}
+        showSearch={false}
+        showArrow={!readOnly}
+        menuItemSelectedIcon={null}
+        dropdownMatchSelectWidth={false}
+        onSelect={onOptionClick}
+        onDeselect={onOptionClick}
+        disabled={disabled}
+        dropdownAlign={
+          (unit.type === 'minutes' || unit.type === 'hours') &&
+          period !== 'day' &&
+          period !== 'hour'
+            ? {
+                // Usage: https://github.com/yiminghe/dom-align
+                // Set direction to left to prevent dropdown to overlap window
+                points: ['tr', 'br'],
+              }
+            : undefined
+        }
+        data-testid={`custom-select-${unit.type}`}
+        {...otherProps}
+      />
+      <Menu closeOnItemClick={false} shadow='md' width={200}>
+        <Menu.Target>
+          <UnstyledButton>
+            <Group>
+              {/* <Input
+                rightSection={
+                  <>
+                    {' '}
+                    <CloseButton />{' '}
+                  </>
+                }
+              /> */}
+              <MultiSelect
+                maxDropdownHeight={0}
+                zIndex={-1}
+                value={stringValue}
+                data={options}
+              />
+            </Group>
+          </UnstyledButton>
+        </Menu.Target>
+
+        <Menu.Dropdown>
+          {options?.map((o) => {
+            return (
+              <Menu.Item
+                color={stringValue?.includes(o.value) ? 'green' : 'gray'}
+                onClick={() => onOptionClick(o.value)}
+              >
+                {o.label}
+              </Menu.Item>
+            )
+          })}
+        </Menu.Dropdown>
+      </Menu>
+    </>
   )
 }
