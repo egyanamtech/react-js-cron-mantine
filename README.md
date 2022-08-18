@@ -1,18 +1,21 @@
 ## ReactJS Cron
 
-> A React cron editor built with [antd](https://github.com/ant-design/ant-design)
+> A React cron editor built with [mantine](https://mantine.dev)
 
-[![npm package](https://img.shields.io/npm/v/react-js-cron/latest.svg)](https://www.npmjs.com/package/react-js-cron)
-[![MIT License Badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/xrutayisire/react-js-cron/blob/master/LICENSE.md)
+[![npm package](https://img.shields.io/npm/v/react-js-cron-mantine/latest.svg)](https://www.npmjs.com/package/react-js-cron-mantine)
+[![MIT License Badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/egyanamtech/react-js-cron-mantine/blob/master/LICENSE.md)
 
-[![Build](https://github.com/xrutayisire/react-js-cron/actions/workflows/build.yml/badge.svg)](https://github.com/xrutayisire/react-js-cron/actions/workflows/build.yml)
-[![Lint](https://github.com/xrutayisire/react-js-cron/actions/workflows/lint.yml/badge.svg)](https://github.com/xrutayisire/react-js-cron/actions/workflows/lint.yml)
-[![Unit tests](https://github.com/xrutayisire/react-js-cron/actions/workflows/test.yml/badge.svg)](https://github.com/xrutayisire/react-js-cron/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/xrutayisire/react-js-cron/branch/master/graph/badge.svg?token=H4I8REN489)](https://codecov.io/gh/xrutayisire/react-js-cron)
+[![Build](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/build.yml/badge.svg)](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/build.yml)
+[![Lint](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/lint.yml/badge.svg)](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/lint.yml)
+[![Unit tests](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/test.yml/badge.svg)](https://github.com/egyanamtech/react-js-cron-mantine/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/egyanamtech/react-js-cron-mantine/branch/master/graph/badge.svg?token=H4I8REN489)](https://codecov.io/gh/egyanamtech/react-js-cron-mantine)
 
-Live **demo** and **usage** at [https://xrutayisire.github.io/react-js-cron/](https://xrutayisire.github.io/react-js-cron/?path=/docs/reactjs-cron--demo)
+<!-- Live **demo** and **usage** at [https://xrutayisire.github.io/react-js-cron/](https://xrutayisire.github.io/react-js-cron/?path=/docs/reactjs-cron--demo) -->
 
-![react-js-cron example](https://raw.githubusercontent.com/xrutayisire/react-js-cron/master/react-js-cron-example.png)
+![react-js-cron example](https://raw.githubusercontent.com/egyanamtech/react-js-cron-mantine/master/react-js-cron-example.png)
+
+## Forked From
+- [react-js-cron](https://github.com/xrutayisire/react-js-cron)
 
 ## Features
 
@@ -39,20 +42,20 @@ react-js-cron is written in TypeScript with complete definitions
 
 Be sure that you have these dependencies on your project:
 * react (>=16.8.0)
-* antd (>=4.6.0)
+* mantine (>=5.0.0)
 
 ```bash
 # NPM
-npm install react-js-cron
+npm install react-js-cron-mantine
 
 # Yarn
-yarn add react-js-cron
+yarn add react-js-cron-mantine
 ```
 
 ## Usage
 
 ```jsx
-import { Cron } from 'react-js-cron';
+import { Cron } from 'react-js-cron-mantine';
 
 import 'react-js-cron/dist/styles.css';
 
@@ -75,6 +78,7 @@ import 'react-js-cron/dist/styles.css';
 ```
 
 ## Examples
+All the following customizations/configurations should work with this fork as well
 
 Learn more with [dynamic settings](https://xrutayisire.github.io/react-js-cron/?path=/story/reactjs-cron--dynamic-settings).
 
@@ -319,5 +323,6 @@ CronProps {
 
 ## License
 
-MIT © [xrutayisire](https://github.com/xrutayisire)
+MIT © [egyanamtech](https://github.com/egyanamtech) (this fork)
+MIT © [xrutayisire](https://github.com/xrutayisire) (Original work)
   
