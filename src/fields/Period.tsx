@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
-import Select, { BaseOptionType } from 'antd/lib/select'
+// import { BaseOptionType } from 'antd/lib/select'
 
 import { PeriodProps, PeriodType } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
+import { Select } from '@mantine/core'
 
 export default function Period(props: PeriodProps) {
   const {
@@ -16,7 +17,11 @@ export default function Period(props: PeriodProps) {
     shortcuts,
     allowedPeriods,
   } = props
-  const options: BaseOptionType[] = []
+  const options: {
+    value: string
+    label: string
+  }[] = []
+  const newValue = [value]
 
   if (allowedPeriods.includes('year')) {
     options.push({
@@ -117,19 +122,19 @@ export default function Period(props: PeriodProps) {
       {locale.prefixPeriod !== '' && (
         <span>{locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}</span>
       )}
-
-      <Select<PeriodType, BaseOptionType>
+      <Select
+        ml={5}
         key={JSON.stringify(locale)}
-        defaultValue={value}
+        // defaultValue={value}
         value={value}
         onChange={handleChange}
-        options={options}
-        className={selectClassName}
-        dropdownClassName={dropdownClassName}
-        disabled={disabled}
-        showArrow={!readOnly}
-        open={readOnly ? false : undefined}
-        data-testid='select-period'
+        data={options}
+        // className={selectClassName}
+        // dropdownClassName={dropdownClassName}
+        // disabled={disabled}
+        // showArrow={!readOnly}
+        // open={readOnly ? false : undefined}
+        // data-testid='select-period'
       />
     </div>
   )
