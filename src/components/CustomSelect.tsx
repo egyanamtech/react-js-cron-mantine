@@ -10,6 +10,7 @@ import {
   UnstyledButton,
 } from '@mantine/core'
 import { CustomSelectProps, Clicks } from '../types'
+// import { IconChevronDown } from '@tabler/icons';
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames, sort } from '../utils'
 import { parsePartArray, partToString, formatValue } from '../converter'
@@ -36,7 +37,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   } = props
 
   const stringValue = useMemo(() => {
-    console.log(stringValue)
+    // console.log(stringValue)
     if (value && Array.isArray(value)) {
       return value.map((value: number) => value.toString())
     }
@@ -49,7 +50,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   // }, [value])
   // console.log(stringLabel)
 
-  console.log(optionsList)
+  // console.log(optionsList)
   const options = useMemo(
     () => {
       if (optionsList) {
@@ -116,6 +117,7 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   const simpleClick = useCallback(
     (newValueOption: number | number[]) => {
+      console.log({ newValueOption })
       const newValueOptions = Array.isArray(newValueOption)
         ? sort(newValueOption)
         : [newValueOption]
@@ -138,8 +140,20 @@ export default function CustomSelect(props: CustomSelectProps) {
       if (newValue.length === unit.total) {
         setValue([])
       } else {
+        console.log(newValue)
         setValue(newValue)
       }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setValue, value]
+  )
+
+  const simpleClickMantine = useCallback(
+    (newValueOption: string[]) => {
+      let newValue = newValueOption.map(Number)
+      newValue.sort((a, b) => a - b)
+      setValue(newValue)
+      console.log(newValue)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setValue, value]
@@ -264,8 +278,8 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   return (
     <>
-      {console.log(stringValue)}
-      <Select<string[] | undefined>
+      {/* {console.log(stringValue)} */}
+      {/* <Select<string[] | undefined>
         // Use 'multiple' instead of 'tags‘ mode
         // cf: Issue #2
         mode={
@@ -302,42 +316,19 @@ export default function CustomSelect(props: CustomSelectProps) {
         }
         data-testid={`custom-select-${unit.type}`}
         {...otherProps}
+      /> */}
+      {console.log(otherProps.placeholder)}
+      <MultiSelect
+        ml={5}
+        data={options}
+        value={stringValue}
+        // rightSection={<IconChevronDown size={14} />}
+        styles={{ rightSection: { pointerEvents: 'none' } }}
+        rightSectionWidth={40}
+        onChange={(e) => simpleClickMantine(e)}
+        clearable
+        placeholder={otherProps?.placeholder?.toString()}
       />
-      <Menu closeOnItemClick={false} shadow='md' width={200}>
-        <Menu.Target>
-          <UnstyledButton>
-            <Group>
-              {/* <Input
-                rightSection={
-                  <>
-                    {' '}
-                    <CloseButton />{' '}
-                  </>
-                }
-              /> */}
-              <MultiSelect
-                maxDropdownHeight={0}
-                zIndex={-1}
-                value={stringValue}
-                data={options}
-              />
-            </Group>
-          </UnstyledButton>
-        </Menu.Target>
-
-        <Menu.Dropdown>
-          {options?.map((o) => {
-            return (
-              <Menu.Item
-                color={stringValue?.includes(o.value) ? 'green' : 'gray'}
-                onClick={() => onOptionClick(o.value)}
-              >
-                {o.label}
-              </Menu.Item>
-            )
-          })}
-        </Menu.Dropdown>
-      </Menu>
     </>
   )
 }

@@ -11,6 +11,7 @@ import WeekDays from './fields/WeekDays'
 import { classNames, setError, usePrevious } from './utils'
 import { DEFAULT_LOCALE_EN } from './locale'
 import { setValuesFromCronString, getCronStringFromValues } from './converter'
+import { Group } from '@mantine/core'
 
 export default function Cron(props: CronProps) {
   const {
@@ -275,6 +276,7 @@ export default function Cron(props: CronProps) {
 
   return (
     <div className={internalClassName}>
+      {/* <Group> */}
       {allowedDropdowns.includes('period') && (
         <Period
           value={periodForRender}
@@ -384,6 +386,7 @@ export default function Cron(props: CronProps) {
           </div>
         </>
       )}
+      {/* </Group> */}
     </div>
   )
 }
