@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
-import Button from 'antd/lib/button'
+// import Button from 'antd/lib/button'
 
 import { CronProps, PeriodType } from './types'
 import Period from './fields/Period'
@@ -12,6 +12,7 @@ import { classNames, setError, usePrevious } from './utils'
 import { DEFAULT_LOCALE_EN } from './locale'
 import { setValuesFromCronString, getCronStringFromValues } from './converter'
 import { Group } from '@mantine/core'
+import { Button } from '@mantine/core'
 
 export default function Cron(props: CronProps) {
   const {
@@ -245,15 +246,18 @@ export default function Cron(props: CronProps) {
     () => {
       if (clearButton && !readOnly) {
         return (
-          <Button
-            className={clearButtonClassName}
-            danger
-            type='primary'
-            disabled={disabled}
-            {...otherClearButtonProps}
-            onClick={handleClear}
-          >
-            {locale.clearButtonText || DEFAULT_LOCALE_EN.clearButtonText}
+          // <Button
+          //   className={clearButtonClassName}
+          //   danger
+          //   type='primary'
+          //   disabled={disabled}
+          //   {...otherClearButtonProps}
+          //   onClick={handleClear}
+          // >
+          //   {locale.clearButtonText || DEFAULT_LOCALE_EN.clearButtonText}
+          // </Button>
+          <Button ml={5} onClick={handleClear} color='red' size='xs'>
+            Clear
           </Button>
         )
       }
@@ -346,7 +350,12 @@ export default function Cron(props: CronProps) {
               />
             )}
 
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+            }}
+          >
             {periodForRender !== 'minute' &&
               periodForRender !== 'hour' &&
               allowedDropdowns.includes('hours') && (
