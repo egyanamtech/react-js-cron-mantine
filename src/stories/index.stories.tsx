@@ -457,13 +457,6 @@ export function DynamicSettings() {
         allowedDropdowns={allowedDropdowns}
         allowedPeriods={allowedPeriods}
         locale={transformedLocale}
-        clearButtonProps={
-          customStyle
-            ? {
-                type: 'default',
-              }
-            : undefined
-        }
       />
 
       <p style={{ marginTop: 20 }}>Selected period: {selectedPeriod}</p>
@@ -1746,9 +1739,9 @@ export function CustomStyle() {
         }}
         onError={onError}
         className='my-project-cron'
-        clearButtonProps={{
-          type: 'default',
-        }}
+        // clearButtonProps={{
+        //   type: 'default',
+        // }}
       />
 
       <div>

@@ -17,7 +17,6 @@ import { Button } from '@mantine/core'
 export default function Cron(props: CronProps) {
   const {
     clearButton = true,
-    clearButtonProps = {},
     clearButtonAction = 'fill-with-every',
     locale = DEFAULT_LOCALE_EN,
     value = '',
@@ -229,19 +228,19 @@ export default function Cron(props: CronProps) {
     [className, error, displayError, disabled, readOnly]
   )
 
-  const { className: clearButtonClassNameProp, ...otherClearButtonProps } =
-    clearButtonProps
+  // const { className: clearButtonClassNameProp, ...otherClearButtonProps } =
+  //   clearButtonProps
   const clearButtonClassName = useMemo(
     () =>
       classNames({
         'react-js-cron-clear-button': true,
         [`${className}-clear-button`]: !!className,
-        [`${clearButtonClassNameProp}`]: !!clearButtonClassNameProp,
+        // [`${clearButtonClassNameProp}`]: !!clearButtonClassNameProp,
       }),
-    [className, clearButtonClassNameProp]
+    [className]
   )
 
-  const otherClearButtonPropsJSON = JSON.stringify(otherClearButtonProps)
+  // const otherClearButtonPropsJSON = JSON.stringify(otherClearButtonProps)
   const clearButtonNode = useMemo(
     () => {
       if (clearButton && !readOnly) {
@@ -271,7 +270,7 @@ export default function Cron(props: CronProps) {
       localeJSON,
       clearButtonClassName,
       disabled,
-      otherClearButtonPropsJSON,
+      // otherClearButtonPropsJSON,
       handleClear,
     ]
   )

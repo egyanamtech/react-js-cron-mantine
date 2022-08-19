@@ -96,7 +96,6 @@ export interface CronProps {
   /**
    * antd button props to customize the clear button.
    */
-  clearButtonProps?: ClearButtonProps
 
   /**
    * Define the clear button action.
@@ -219,7 +218,9 @@ export type OnError =
   | OnErrorFunction
   | Dispatch<SetStateAction<CronError>>
   | undefined
-export interface ClearButtonProps extends Omit<ButtonProps, 'onClick'> {}
+export interface ClearButtonProps {
+  className: string | undefined
+}
 export type ClearButtonAction = 'empty' | 'fill-with-every'
 export type PeriodType =
   | 'year'
@@ -294,25 +295,9 @@ export interface MinutesProps extends FieldProps {
   leadingZero: LeadingZero
   clockFormat?: ClockFormat
 }
-export interface CustomSelectProps
-  extends Omit<
-    SelectProps<any>,
-    | 'mode'
-    | 'tokenSeparators'
-    | 'allowClear'
-    | 'virtual'
-    | 'onClick'
-    | 'onBlur'
-    | 'tagRender'
-    | 'dropdownRender'
-    | 'showSearch'
-    | 'showArrow'
-    | 'onChange'
-    | 'dropdownMatchSelectWidth'
-    | 'options'
-    | 'onSelect'
-    | 'onDeselect'
-  > {
+export interface CustomSelectProps {
+  className: string | undefined
+  placeholder: string
   grid?: boolean
   setValue: SetValueNumbersOrUndefined
   optionsList?: string[]
