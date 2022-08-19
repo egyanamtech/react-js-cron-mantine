@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback, useRef } from 'react'
-// import Select from 'antd/lib/select'
 import {
   CloseButton,
   Group,
@@ -14,7 +13,6 @@ import { CustomSelectProps, Clicks } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames, sort } from '../utils'
 import { parsePartArray, partToString, formatValue } from '../converter'
-import Select from 'antd/lib/select'
 
 export default function CustomSelect(props: CustomSelectProps) {
   const {

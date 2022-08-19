@@ -1,13 +1,13 @@
 /* eslint-disable */
 import React, { useState, useMemo } from 'react'
 import {
-  Input as AntdInput,
-  Divider,
-  Table,
+  // Input as AntdInput,
+  // Divider,
+  // Table,
   Form,
   Radio,
   Switch,
-  Button,
+  // Button,
   Select,
 } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
@@ -36,7 +36,7 @@ export function Demo() {
 
   return (
     <div>
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -58,7 +58,7 @@ export function Demo() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -170,7 +170,7 @@ export function DynamicSettings() {
 
   return (
     <div>
-      <Form layout='inline' className='demo-dynamic-settings'>
+      {/* <Form layout='inline' className='demo-dynamic-settings'>
         <Form.Item label='Display input'>
           <Switch
             checked={displayInput}
@@ -377,12 +377,12 @@ export function DynamicSettings() {
           (**) Need to reset the component and to have an empty default value to
           see the changes
         </p>
-      </Form>
+      </Form> */}
 
       <div>
         <p>Value: {values.cronValue}</p>
 
-        <Button
+        {/* <Button
           type='primary'
           onClick={() => {
             dispatchValues({
@@ -394,10 +394,10 @@ export function DynamicSettings() {
           }}
         >
           Reset cron component
-        </Button>
+        </Button> */}
       </div>
 
-      {displayInput && (
+      {/* {displayInput && (
         <>
           <AntdInput
             readOnly={readOnlyInput || mode === 'single'}
@@ -426,7 +426,7 @@ export function DynamicSettings() {
 
           <Divider>OR</Divider>
         </>
-      )}
+      )} */}
 
       <Cron
         key={key}
@@ -482,7 +482,7 @@ export function Input() {
 
   return (
     <div>
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -496,7 +496,7 @@ export function Input() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <div style={{ marginTop: 10 }}>
         <InfoCircleOutlined style={{ marginRight: 5 }} />
@@ -506,7 +506,7 @@ export function Input() {
         </span>
       </div>
 
-      <Divider>OR</Divider>
+      {/* <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -527,7 +527,7 @@ export function InputWithOnEnter() {
 
   return (
     <div>
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -547,14 +547,14 @@ export function InputWithOnEnter() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
       <div style={{ marginTop: 10 }}>
         <InfoCircleOutlined style={{ marginRight: 5 }} />
         <span style={{ fontSize: 12 }}>
           You can also add &quot;onEnter&quot; support to set the value
         </span>
       </div>
-      <Divider>OR</Divider>
+      {/* <Divider>OR</Divider> */}
       <Cron
         value={values.cronValue}
         setValue={(newValue: string) => {
@@ -574,9 +574,9 @@ export function ReadOnlyInput() {
 
   return (
     <div>
-      <AntdInput readOnly value={value} />
+      {/* <AntdInput readOnly value={value} />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron value={value} setValue={setValue} />
     </div>
@@ -689,7 +689,7 @@ export function HumanizeLabels() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -705,7 +705,7 @@ export function HumanizeLabels() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -761,7 +761,7 @@ export function HumanizeValue() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -777,7 +777,7 @@ export function HumanizeValue() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -848,7 +848,7 @@ export function HumanizeLabelsAndValue() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -864,7 +864,7 @@ export function HumanizeLabelsAndValue() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -903,7 +903,7 @@ export function LeadingZero() {
       <p>Leading zero: &quot;always&quot;</p>
       <p>Value: {values.cronValue}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -919,7 +919,7 @@ export function LeadingZero() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -959,7 +959,7 @@ export function TrackError() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -973,7 +973,7 @@ export function TrackError() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <div style={{ marginTop: 10 }}>
         <InfoCircleOutlined style={{ marginRight: 5 }} />
@@ -983,7 +983,7 @@ export function TrackError() {
         </span>
       </div>
 
-      <Divider>OR</Divider>
+      {/* <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1017,7 +1017,7 @@ export function DisableErrorStyle() {
       <p>Display error: false</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1033,7 +1033,7 @@ export function DisableErrorStyle() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1127,7 +1127,7 @@ export function EmptyNeverAllowed() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1143,7 +1143,7 @@ export function EmptyNeverAllowed() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1180,7 +1180,7 @@ export function EmptyAlwaysAllowed() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1196,7 +1196,7 @@ export function EmptyAlwaysAllowed() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1287,7 +1287,7 @@ export function Shortcuts() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1303,7 +1303,7 @@ export function Shortcuts() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1332,7 +1332,7 @@ export function Shortcuts() {
         </span>
       </div>
 
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={data}
         showHeader={false}
@@ -1340,7 +1340,7 @@ export function Shortcuts() {
         pagination={false}
         style={{ marginTop: 20 }}
         title={() => <h3>Supported shortcuts</h3>}
-      />
+      /> */}
     </div>
   )
 }
@@ -1357,7 +1357,7 @@ export function TwelveHourClock() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1373,7 +1373,7 @@ export function TwelveHourClock() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1402,7 +1402,7 @@ export function TwentyFourHourClock() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1418,7 +1418,7 @@ export function TwentyFourHourClock() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -1610,7 +1610,7 @@ export function FrenchLocale() {
       <p>Erreur: {error ? error.description : 'undefined'}</p>
       <p>Value: {values.cronValue}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1626,7 +1626,7 @@ export function FrenchLocale() {
         }}
       />
 
-      <Divider>OU</Divider>
+      <Divider>OU</Divider> */}
 
       <Cron
         locale={FRENCH_LOCALE}
@@ -1718,7 +1718,7 @@ export function CustomStyle() {
       <p>clearButtonProps: &#123; type: &quot;default&quot; &#125;</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1734,7 +1734,7 @@ export function CustomStyle() {
         }}
       />
 
-      <Divider>OR</Divider>
+      <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}

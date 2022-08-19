@@ -103,7 +103,6 @@
     "@types/testing-library__jest-dom": "5.14.5",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
-    "antd": "4.21.3",
     "babel-loader": "8.2.5",
     "babel-plugin-react-remove-properties": "0.3.0",
     "babel-plugin-transform-es2015-modules-umd": "6.24.1",
