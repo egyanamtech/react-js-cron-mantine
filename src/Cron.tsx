@@ -167,11 +167,11 @@ export default function Cron(props: CronProps) {
 
   const handleClear = useCallback(
     () => {
-      setMonthDays(undefined)
-      setMonths(undefined)
-      setWeekDays(undefined)
-      setHours(undefined)
-      setMinutes(undefined)
+      setMonthDays([])
+      setMonths([])
+      setWeekDays([])
+      setHours([])
+      setMinutes([])
 
       // When clearButtonAction is 'empty'
       let newValue = ''
