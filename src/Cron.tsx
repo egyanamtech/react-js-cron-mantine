@@ -217,7 +217,6 @@ export default function Cron(props: CronProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [period, setValue, onError, clearButtonAction]
   )
-  console.log(value)
   const internalClassName = useMemo(
     () =>
       classNames({
@@ -342,42 +341,12 @@ export default function Cron(props: CronProps) {
                   Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
                 )
           }
-          // hourarr.includes(
-          //   Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-          // )
-          //   ? null
-          //   :
-          //   if ( Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))!==0) {
-          //     minutearr
-          //   }
-
-          //   hourarr.push(
-          //       Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-          //     )
         }
-        // return minutes?.map((m) => {
-        //   return {
-        //     h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
-        //     m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
-        //   }
-        // })
       })
     }
-    console.log({ hourarr, minutearr })
     utcsetHours(hourarr)
     utcsetMinutes(minutearr)
   }, [hours, minutes])
-
-  // console.log(newh)
-  // if (offSet < 0) {
-  //   const offminutes = -(-offSet % 60)
-  //   const offhours = -Math.floor(-offSet / 60)
-  //   console.log({ offminutes, offhours })
-  //   const newArr = minutes?.map((element, index) => {
-  //     return element+;
-  //   });
-
-  // }
   return (
     <div className={internalClassName}>
       {/* <Group> */}
