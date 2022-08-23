@@ -318,13 +318,42 @@ export default function Cron(props: CronProps) {
             // }
           })
         } else {
-          hourarr.includes(
-            Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-          )
-            ? null
-            : hourarr.push(
-                Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-              )
+          if (Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm')) !== 0) {
+            hourarr.includes(
+              Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+            )
+              ? null
+              : hourarr.push(
+                  Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+                )
+            minutearr.includes(
+              Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))
+            )
+              ? null
+              : minutearr.push(
+                  Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))
+                )
+          } else {
+            hourarr.includes(
+              Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+            )
+              ? null
+              : hourarr.push(
+                  Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+                )
+          }
+          // hourarr.includes(
+          //   Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+          // )
+          //   ? null
+          //   :
+          //   if ( Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))!==0) {
+          //     minutearr
+          //   }
+
+          //   hourarr.push(
+          //       Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+          //     )
         }
         // return minutes?.map((m) => {
         //   return {
