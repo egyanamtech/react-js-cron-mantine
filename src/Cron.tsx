@@ -13,7 +13,10 @@ import { DEFAULT_LOCALE_EN } from './locale'
 import { setValuesFromCronString, getCronStringFromValues } from './converter'
 import { Group } from '@mantine/core'
 import { Button } from '@mantine/core'
-
+import dayjs from 'dayjs'
+import RelativeTime from 'dayjs/plugin/relativeTime'
+import tz from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 export default function Cron(props: CronProps) {
   const {
     clearButton = true,
@@ -69,6 +72,8 @@ export default function Cron(props: CronProps) {
   const [weekDays, setWeekDays] = useState<number[] | undefined>()
   const [hours, setHours] = useState<number[] | undefined>()
   const [minutes, setMinutes] = useState<number[] | undefined>()
+  const [utchours, utcsetHours] = useState<number[] | undefined>()
+  const [utcminutes, utcsetMinutes] = useState<number[] | undefined>()
   const [error, setInternalError] = useState<boolean>(false)
   const [valueCleared, setValueCleared] = useState<boolean>(false)
   const previousValueCleared = usePrevious(valueCleared)
@@ -137,8 +142,8 @@ export default function Cron(props: CronProps) {
           months,
           monthDays,
           weekDays,
-          hours,
-          minutes,
+          utchours,
+          utcminutes,
           humanizeValue
         )
 
@@ -157,8 +162,8 @@ export default function Cron(props: CronProps) {
       monthDays,
       months,
       weekDays,
-      hours,
-      minutes,
+      utchours,
+      utcminutes,
       humanizeValue,
       valueCleared,
     ]
@@ -212,7 +217,7 @@ export default function Cron(props: CronProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [period, setValue, onError, clearButtonAction]
   )
-
+  console.log(value)
   const internalClassName = useMemo(
     () =>
       classNames({
@@ -276,7 +281,74 @@ export default function Cron(props: CronProps) {
   )
 
   const periodForRender = period || defaultPeriodRef.current
+  dayjs.extend(RelativeTime)
+  dayjs.extend(utc)
+  dayjs.extend(tz)
+  // console.log(dayjs.utc())
+  const offSet = new Date().getTimezoneOffset()
+  // Number(dayjs.utc(dayjs().hour(hours![0]).minute(minutes![0])).format('mm'))
+  // console.log(hours)
 
+  useEffect(() => {
+    const hourarr: number[] = []
+    const minutearr: number[] = []
+    // console.log({ hours, minutes })
+    if (hours && hours.length > 0) {
+      const newh = hours?.map((h) => {
+        if (minutes && minutes.length > 0) {
+          minutes?.map((m) => {
+            hourarr.includes(
+              Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH'))
+            )
+              ? null
+              : hourarr.push(
+                  Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH'))
+                )
+            minutearr.includes(
+              Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm'))
+            )
+              ? null
+              : minutearr.push(
+                  Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm'))
+                )
+
+            // return {
+            //   h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
+            //   m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
+            // }
+          })
+        } else {
+          hourarr.includes(
+            Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+          )
+            ? null
+            : hourarr.push(
+                Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
+              )
+        }
+        // return minutes?.map((m) => {
+        //   return {
+        //     h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
+        //     m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
+        //   }
+        // })
+      })
+    }
+    console.log({ hourarr, minutearr })
+    utcsetHours(hourarr)
+    utcsetMinutes(minutearr)
+  }, [hours, minutes])
+
+  // console.log(newh)
+  // if (offSet < 0) {
+  //   const offminutes = -(-offSet % 60)
+  //   const offhours = -Math.floor(-offSet / 60)
+  //   console.log({ offminutes, offhours })
+  //   const newArr = minutes?.map((element, index) => {
+  //     return element+;
+  //   });
+
+  // }
   return (
     <div className={internalClassName}>
       {/* <Group> */}

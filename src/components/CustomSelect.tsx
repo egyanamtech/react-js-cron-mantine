@@ -115,7 +115,7 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   const simpleClick = useCallback(
     (newValueOption: number | number[]) => {
-      console.log({ newValueOption })
+      // console.log({ newValueOption })
       const newValueOptions = Array.isArray(newValueOption)
         ? sort(newValueOption)
         : [newValueOption]
@@ -138,7 +138,7 @@ export default function CustomSelect(props: CustomSelectProps) {
       if (newValue.length === unit.total) {
         setValue([])
       } else {
-        console.log(newValue)
+        // console.log(newValue)
         setValue(newValue)
       }
     },
@@ -151,7 +151,7 @@ export default function CustomSelect(props: CustomSelectProps) {
       let newValue = newValueOption.map(Number)
       newValue.sort((a, b) => a - b)
       setValue(newValue)
-      console.log(newValue)
+      // console.log(newValue)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setValue, value]
@@ -193,7 +193,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   const clicksRef = useRef<Clicks[]>([])
   const onOptionClick = useCallback(
     (newValueOption: string) => {
-      console.log(newValueOption)
+      // console.log(newValueOption)
       if (!readOnly) {
         const doubleClickTimeout = 300
         const clicks = clicksRef.current
@@ -315,7 +315,7 @@ export default function CustomSelect(props: CustomSelectProps) {
         data-testid={`custom-select-${unit.type}`}
         {...otherProps}
       /> */}
-      {console.log(otherProps.placeholder)}
+      {/* {console.log(otherProps.placeholder)} */}
       <MultiSelect
         ml={5}
         data={options}

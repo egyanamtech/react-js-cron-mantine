@@ -23,6 +23,11 @@ import { ClearButtonAction, CronType, Mode } from '../types'
 
 import '../styles.css'
 import './styles.stories.css'
+import dayjs from 'dayjs'
+import RelativeTime from 'dayjs/plugin/relativeTime'
+import tz from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+import duration from 'dayjs/plugin/duration'
 
 export default {
   title: 'ReactJS Cron',
@@ -33,6 +38,20 @@ export function Demo() {
   const defaultValue = '30 5 * * 1,6'
   const [values, dispatchValues] = useCronReducer(defaultValue)
   const [error, onError] = useState<CronError>()
+  dayjs.extend(RelativeTime)
+  dayjs.extend(utc)
+  dayjs.extend(tz)
+  dayjs.extend(duration)
+  // console.log(dayjs().diff(dayjs.utc().local().format(), 'm'))
+  // console.log(Number(dayjs.utc(dayjs().hour(6).minute(53)).format('mm')))
+  // console.log(dayjs().tz('America/New_York').utcOffset())
+  // console.log(new Date().getTimezoneOffset())
+  const offSet = new Date().getTimezoneOffset()
+  if (offSet < 0) {
+    const minutes = -(-offSet % 60)
+    const hours = -Math.floor(-offSet / 60)
+    // console.log({ minutes, hours })
+  }
 
   return (
     <div>
@@ -115,6 +134,7 @@ export function DynamicSettings() {
   const [mode, setMode] = useState<Mode>('multiple')
   const [key, setKey] = useState('render')
   const [values, dispatchValues] = useCronReducer(defaultValue)
+  // console.log(values)
   const [error, onError] = useState<CronError>()
   const [clearButtonAction, setClearButtonAction] =
     useState<ClearButtonAction>('fill-with-every')
@@ -427,7 +447,7 @@ export function DynamicSettings() {
           <Divider>OR</Divider>
         </>
       )} */}
-
+      {/* {console.log(values.inputValue)} */}
       <Cron
         key={key}
         value={values.cronValue}
