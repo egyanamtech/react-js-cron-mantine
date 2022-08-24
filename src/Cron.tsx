@@ -17,6 +17,7 @@ import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import tz from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
+import { Switch, Text } from '@mantine/core'
 export default function Cron(props: CronProps) {
   const {
     clearButton = true,
@@ -78,7 +79,7 @@ export default function Cron(props: CronProps) {
   const [valueCleared, setValueCleared] = useState<boolean>(false)
   const previousValueCleared = usePrevious(valueCleared)
   const localeJSON = JSON.stringify(locale)
-
+  const [checked, setChecked] = useState(false)
   useEffect(
     () => {
       setValuesFromCronString(
@@ -142,8 +143,8 @@ export default function Cron(props: CronProps) {
           months,
           monthDays,
           weekDays,
-          utchours,
-          utcminutes,
+          checked ? utchours : hours,
+          checked ? utcminutes : minutes,
           humanizeValue
         )
 
@@ -162,8 +163,8 @@ export default function Cron(props: CronProps) {
       monthDays,
       months,
       weekDays,
-      utchours,
-      utcminutes,
+      checked ? utchours : hours,
+      checked ? utcminutes : minutes,
       humanizeValue,
       valueCleared,
     ]
@@ -286,7 +287,7 @@ export default function Cron(props: CronProps) {
   // console.log(dayjs.utc())
   const offSet = new Date().getTimezoneOffset()
   // Number(dayjs.utc(dayjs().hour(hours![0]).minute(minutes![0])).format('mm'))
-  // console.log(hours)
+  console.log(value)
 
   useEffect(() => {
     const hourarr: number[] = []
@@ -348,123 +349,139 @@ export default function Cron(props: CronProps) {
     utcsetMinutes(minutearr)
   }, [hours, minutes])
   return (
-    <div className={internalClassName}>
-      {/* <Group> */}
-      {allowedDropdowns.includes('period') && (
-        <Period
-          value={periodForRender}
-          setValue={setPeriod}
-          locale={locale}
-          className={className}
-          disabled={disabled}
-          readOnly={readOnly}
-          shortcuts={shortcuts}
-          allowedPeriods={allowedPeriods}
-        />
-      )}
+    <>
+      <Switch
+        label='Convert to UTC timezone'
+        checked={checked}
+        onChange={(event) => setChecked(event.currentTarget.checked)}
+      />
+      <div className={internalClassName}>
+        {/* <Group> */}
 
-      {periodForRender === 'reboot' ? (
-        clearButtonNode
-      ) : (
-        <>
-          {periodForRender === 'year' &&
-            allowedDropdowns.includes('months') && (
-              <Months
-                value={months}
-                setValue={setMonths}
-                locale={locale}
-                className={className}
-                humanizeLabels={humanizeLabels}
-                disabled={disabled}
-                readOnly={readOnly}
-                period={periodForRender}
-                periodicityOnDoubleClick={periodicityOnDoubleClick}
-                mode={mode}
-              />
-            )}
-
-          {(periodForRender === 'year' || periodForRender === 'month') &&
-            allowedDropdowns.includes('month-days') && (
-              <MonthDays
-                value={monthDays}
-                setValue={setMonthDays}
-                locale={locale}
-                className={className}
-                weekDays={weekDays}
-                disabled={disabled}
-                readOnly={readOnly}
-                leadingZero={leadingZero}
-                period={periodForRender}
-                periodicityOnDoubleClick={periodicityOnDoubleClick}
-                mode={mode}
-              />
-            )}
-
-          {(periodForRender === 'year' ||
-            periodForRender === 'month' ||
-            periodForRender === 'week') &&
-            allowedDropdowns.includes('week-days') && (
-              <WeekDays
-                value={weekDays}
-                setValue={setWeekDays}
-                locale={locale}
-                className={className}
-                humanizeLabels={humanizeLabels}
-                monthDays={monthDays}
-                disabled={disabled}
-                readOnly={readOnly}
-                period={periodForRender}
-                periodicityOnDoubleClick={periodicityOnDoubleClick}
-                mode={mode}
-              />
-            )}
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'baseline',
-            }}
-          >
-            {periodForRender !== 'minute' &&
-              periodForRender !== 'hour' &&
-              allowedDropdowns.includes('hours') && (
-                <Hours
-                  value={hours}
-                  setValue={setHours}
+        {allowedDropdowns.includes('period') && (
+          <Period
+            value={periodForRender}
+            setValue={setPeriod}
+            locale={locale}
+            className={className}
+            disabled={disabled}
+            readOnly={readOnly}
+            shortcuts={shortcuts}
+            allowedPeriods={allowedPeriods}
+          />
+        )}
+        {periodForRender === 'reboot' ? (
+          clearButtonNode
+        ) : (
+          <>
+            {periodForRender === 'year' &&
+              allowedDropdowns.includes('months') && (
+                <Months
+                  value={months}
+                  setValue={setMonths}
                   locale={locale}
                   className={className}
+                  humanizeLabels={humanizeLabels}
                   disabled={disabled}
                   readOnly={readOnly}
-                  leadingZero={leadingZero}
-                  clockFormat={clockFormat}
                   period={periodForRender}
                   periodicityOnDoubleClick={periodicityOnDoubleClick}
                   mode={mode}
                 />
               )}
 
-            {periodForRender !== 'minute' &&
-              allowedDropdowns.includes('minutes') && (
-                <Minutes
-                  value={minutes}
-                  setValue={setMinutes}
+            {(periodForRender === 'year' || periodForRender === 'month') &&
+              allowedDropdowns.includes('month-days') && (
+                <MonthDays
+                  value={monthDays}
+                  setValue={setMonthDays}
                   locale={locale}
-                  period={periodForRender}
                   className={className}
+                  weekDays={weekDays}
                   disabled={disabled}
                   readOnly={readOnly}
                   leadingZero={leadingZero}
-                  clockFormat={clockFormat}
+                  period={periodForRender}
                   periodicityOnDoubleClick={periodicityOnDoubleClick}
                   mode={mode}
                 />
               )}
 
-            {clearButtonNode}
-          </div>
-        </>
-      )}
-      {/* </Group> */}
-    </div>
+            {(periodForRender === 'year' ||
+              periodForRender === 'month' ||
+              periodForRender === 'week') &&
+              allowedDropdowns.includes('week-days') && (
+                <WeekDays
+                  value={weekDays}
+                  setValue={setWeekDays}
+                  locale={locale}
+                  className={className}
+                  humanizeLabels={humanizeLabels}
+                  monthDays={monthDays}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+              }}
+            >
+              {periodForRender !== 'minute' &&
+                periodForRender !== 'hour' &&
+                allowedDropdowns.includes('hours') && (
+                  <Hours
+                    value={hours}
+                    setValue={setHours}
+                    locale={locale}
+                    className={className}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    leadingZero={leadingZero}
+                    clockFormat={clockFormat}
+                    period={periodForRender}
+                    periodicityOnDoubleClick={periodicityOnDoubleClick}
+                    mode={mode}
+                  />
+                )}
+
+              {periodForRender !== 'minute' &&
+                allowedDropdowns.includes('minutes') && (
+                  <Minutes
+                    value={minutes}
+                    setValue={setMinutes}
+                    locale={locale}
+                    period={periodForRender}
+                    className={className}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    leadingZero={leadingZero}
+                    clockFormat={clockFormat}
+                    periodicityOnDoubleClick={periodicityOnDoubleClick}
+                    mode={mode}
+                  />
+                )}
+
+              {clearButtonNode}
+            </div>
+          </>
+        )}
+        {/* </Group> */}
+      </div>
+      <Group>
+        {' '}
+        <Text>
+          Final Output:{' '}
+          <Text weight={700} component='span'>
+            {value}
+          </Text>
+        </Text>
+      </Group>
+    </>
   )
 }
