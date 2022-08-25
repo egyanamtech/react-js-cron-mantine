@@ -404,10 +404,11 @@ export default function Cron(props: CronProps) {
                   ? null
                   : hourarr.push(
                       Number(
-                        dayjs
-                          .tz(dayjs(), timezone_value)
+                        dayjs()
                           .hour(h)
                           .minute(m)
+                          .tz(timezone_value)
+
                           .format('HH')
                       )
                     )
