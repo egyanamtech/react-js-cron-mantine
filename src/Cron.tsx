@@ -11,7 +11,7 @@ import WeekDays from './fields/WeekDays'
 import { classNames, setError, usePrevious } from './utils'
 import { DEFAULT_LOCALE_EN } from './locale'
 import { setValuesFromCronString, getCronStringFromValues } from './converter'
-import { Group } from '@mantine/core'
+import { Group, TextInput } from '@mantine/core'
 import { Button } from '@mantine/core'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
@@ -73,13 +73,18 @@ export default function Cron(props: CronProps) {
   const [weekDays, setWeekDays] = useState<number[] | undefined>()
   const [hours, setHours] = useState<number[] | undefined>()
   const [minutes, setMinutes] = useState<number[] | undefined>()
+  const [tzhours, setTzHours] = useState<number[] | undefined>()
+  const [tzminutes, setTzMinutes] = useState<number[] | undefined>()
   const [utchours, utcsetHours] = useState<number[] | undefined>()
   const [utcminutes, utcsetMinutes] = useState<number[] | undefined>()
   const [error, setInternalError] = useState<boolean>(false)
+  const [tzerror, setTzError] = useState<string>('')
+
   const [valueCleared, setValueCleared] = useState<boolean>(false)
   const previousValueCleared = usePrevious(valueCleared)
   const localeJSON = JSON.stringify(locale)
   const [checked, setChecked] = useState(false)
+  const [timezone_value, setTimezoneValue] = useState('')
   useEffect(
     () => {
       setValuesFromCronString(
@@ -143,8 +148,20 @@ export default function Cron(props: CronProps) {
           months,
           monthDays,
           weekDays,
-          checked ? utchours : hours,
-          checked ? utcminutes : minutes,
+          checked
+            ? utchours
+            : timezone_value == ''
+            ? hours
+            : tzerror == ''
+            ? tzhours
+            : hours,
+          checked
+            ? utcminutes
+            : timezone_value == ''
+            ? minutes
+            : tzerror == ''
+            ? tzminutes
+            : minutes,
           humanizeValue
         )
 
@@ -163,8 +180,20 @@ export default function Cron(props: CronProps) {
       monthDays,
       months,
       weekDays,
-      checked ? utchours : hours,
-      checked ? utcminutes : minutes,
+      checked
+        ? utchours
+        : timezone_value == ''
+        ? hours
+        : tzerror == ''
+        ? tzhours
+        : hours,
+      checked
+        ? utcminutes
+        : timezone_value == ''
+        ? minutes
+        : tzerror == ''
+        ? tzminutes
+        : minutes,
       humanizeValue,
       valueCleared,
     ]
@@ -348,9 +377,150 @@ export default function Cron(props: CronProps) {
     utcsetHours(hourarr)
     utcsetMinutes(minutearr)
   }, [hours, minutes])
+
+  useEffect(() => {
+    const hourarr: number[] = []
+    const minutearr: number[] = []
+
+    if (timezone_value !== '') {
+      try {
+        dayjs().tz(timezone_value)
+      } catch (err) {
+        setTzError(err.message)
+        console.log(err)
+      }
+    }
+    if (timezone_value !== '') {
+      try {
+        if (hours && hours.length > 0) {
+          const newh = hours?.map((h) => {
+            if (minutes && minutes.length > 0) {
+              minutes?.map((m) => {
+                hourarr.includes(
+                  Number(
+                    dayjs().hour(h).minute(m).tz(timezone_value).format('HH')
+                  )
+                )
+                  ? null
+                  : hourarr.push(
+                      Number(
+                        dayjs
+                          .tz(dayjs(), timezone_value)
+                          .hour(h)
+                          .minute(m)
+                          .format('HH')
+                      )
+                    )
+                minutearr.includes(
+                  Number(
+                    dayjs().hour(h).minute(m).tz(timezone_value).format('mm')
+                  )
+                )
+                  ? null
+                  : minutearr.push(
+                      Number(
+                        dayjs()
+                          .hour(h)
+                          .minute(m)
+                          .tz(timezone_value)
+
+                          .format('mm')
+                      )
+                    )
+
+                // return {
+                //   h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
+                //   m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
+                // }
+              })
+            } else {
+              if (
+                Number(
+                  dayjs().hour(h).minute(0).tz(timezone_value).format('mm')
+                ) !== 0
+              ) {
+                hourarr.includes(
+                  Number(
+                    dayjs().hour(h).minute(0).tz(timezone_value).format('HH')
+                  )
+                )
+                  ? null
+                  : hourarr.push(
+                      Number(
+                        dayjs()
+                          .hour(h)
+                          .minute(0)
+                          .tz(timezone_value)
+
+                          .format('HH')
+                      )
+                    )
+                minutearr.includes(
+                  Number(
+                    dayjs().hour(h).minute(0).tz(timezone_value).format('mm')
+                  )
+                )
+                  ? null
+                  : minutearr.push(
+                      Number(
+                        dayjs()
+                          .hour(h)
+                          .minute(0)
+                          .tz(timezone_value)
+
+                          .format('mm')
+                      )
+                    )
+              } else {
+                hourarr.includes(
+                  Number(
+                    dayjs().hour(h).minute(0).tz(timezone_value).format('HH')
+                  )
+                )
+                  ? null
+                  : hourarr.push(
+                      Number(
+                        dayjs()
+                          .hour(h)
+                          .minute(0)
+                          .tz(timezone_value)
+
+                          .format('HH')
+                      )
+                    )
+              }
+            }
+          })
+        }
+        console.log(hourarr)
+        setTzHours(hourarr)
+        setTzMinutes(minutearr)
+        setTzError('')
+      } catch (err) {
+        setTzError(err.message)
+        console.log(err.message)
+      }
+    } else {
+      setTzError('')
+    }
+  }, [hours, minutes, timezone_value])
+
   return (
     <>
+      <Group mb={10}>
+        <TextInput
+          placeholder='Enter Timezone'
+          label='Please Enter Timezone to Convert'
+          value={timezone_value}
+          onChange={(event) => setTimezoneValue(event.currentTarget.value)}
+        />
+        {/* <Button onClick={() => updateTimezone()}>Submit</Button> */}
+      </Group>
+      {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null}
+
       <Switch
+        mb={10}
+        disabled={timezone_value !== ''}
         label='Convert to UTC timezone'
         checked={checked}
         onChange={(event) => setChecked(event.currentTarget.checked)}
