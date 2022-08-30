@@ -238,6 +238,8 @@ export type CronType =
   | 'week-days'
   | 'hours'
   | 'minutes'
+  | 'switch'
+
 export type LeadingZeroType = 'month-days' | 'hours' | 'minutes'
 export type LeadingZero = boolean | LeadingZeroType[]
 export type ClockFormat = '24-hour-clock' | '12-hour-clock'

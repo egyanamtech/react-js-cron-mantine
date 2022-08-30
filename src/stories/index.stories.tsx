@@ -38,47 +38,9 @@ export function Demo() {
   const defaultValue = '30 5 * * 1,6'
   const [values, dispatchValues] = useCronReducer(defaultValue)
   const [error, onError] = useState<CronError>()
-  dayjs.extend(RelativeTime)
-  dayjs.extend(utc)
-  dayjs.extend(tz)
-  dayjs.extend(duration)
-  // console.log(dayjs().diff(dayjs.utc().local().format(), 'm'))
-  // console.log(Number(dayjs.utc(dayjs().hour(6).minute(53)).format('mm')))
-  // console.log(dayjs().tz('America/New_York').utcOffset())
-  // console.log(new Date().getTimezoneOffset())
-  const offSet = new Date().getTimezoneOffset()
-  if (offSet < 0) {
-    const minutes = -(-offSet % 60)
-    const hours = -Math.floor(-offSet / 60)
-    // console.log({ minutes, hours })
-  }
 
   return (
     <div>
-      {/* <AntdInput
-        value={values.inputValue}
-        onChange={(event) => {
-          dispatchValues({
-            type: 'set_input_value',
-            value: event.target.value,
-          })
-        }}
-        onBlur={() => {
-          dispatchValues({
-            type: 'set_cron_value',
-            value: values.inputValue,
-          })
-        }}
-        onPressEnter={() => {
-          dispatchValues({
-            type: 'set_cron_value',
-            value: values.inputValue,
-          })
-        }}
-      />
-
-      <Divider>OR</Divider> */}
-
       <Cron
         value={values.cronValue}
         setValue={(newValue: string) => {

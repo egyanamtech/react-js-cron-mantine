@@ -54,6 +54,7 @@ export default function Cron(props: CronProps) {
       'week-days',
       'hours',
       'minutes',
+      'switch',
     ],
     allowedPeriods = [
       'year',
@@ -489,27 +490,32 @@ export default function Cron(props: CronProps) {
 
   return (
     <>
-      <Switch
-        mb={10}
-        label='Convert to other timezone'
-        checked={checked}
-        onChange={(event) => setChecked(event.currentTarget.checked)}
-      />
-      {checked ? (
-        <>
-          <Group mb={10}>
-            <TextInput
-              placeholder='Enter Timezone'
-              label='Please Enter Timezone to Convert'
-              value={timezone_value}
-              onChange={(event) => setTimezoneValue(event.currentTarget.value)}
-            />
-            {/* <Button onClick={() => updateTimezone()}>Submit</Button> */}
-          </Group>
-        </>
-      ) : null}
-      {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null}
-
+      {allowedDropdowns.includes('switch') && (
+        <div>
+          <Switch
+            mb={10}
+            label='Convert to other timezone'
+            checked={checked}
+            onChange={(event) => setChecked(event.currentTarget.checked)}
+          />
+          {checked ? (
+            <>
+              <Group mb={10}>
+                <TextInput
+                  placeholder='Enter Timezone'
+                  label='Please Enter Timezone to Convert'
+                  value={timezone_value}
+                  onChange={(event) =>
+                    setTimezoneValue(event.currentTarget.value)
+                  }
+                />
+                {/* <Button onClick={() => updateTimezone()}>Submit</Button> */}
+              </Group>
+            </>
+          ) : null}
+          {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null}
+        </div>
+      )}
       <div className={internalClassName}>
         {/* <Group> */}
 
