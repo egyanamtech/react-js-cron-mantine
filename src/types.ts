@@ -93,15 +93,15 @@ export interface CronProps {
    */
   clearButton?: boolean
   /**
-   * Display the convertToUtc.
+   * Display the convertToTimezone.
    *
    * Default: false
    */
-  convertToUtc?: boolean
+  convertToTimezone?: boolean
   /**
-   * Display the convertToUtc.
+   * Display the timezone_value.
    *
-   * Default: ""
+   * Default: "UTC"
    */
   timezone_value?: string
   /**

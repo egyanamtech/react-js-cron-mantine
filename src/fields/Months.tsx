@@ -34,34 +34,32 @@ export default function Months(props: MonthsProps) {
   )
 
   return (
-    <div style={{ display: 'flex', alignItems: 'baseline' }}>
-      <Group align='baseline'>
-        {locale.prefixMonths !== '' && (
-          <span>{locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}</span>
-        )}
+    <Group align='baseline'>
+      {locale.prefixMonths !== '' && (
+        <span>{locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}</span>
+      )}
 
-        <CustomSelect
-          placeholder={locale.emptyMonths || DEFAULT_LOCALE_EN.emptyMonths}
-          optionsList={optionsList}
-          grid={false}
-          value={value}
-          unit={{
-            ...UNITS[3],
-            // Allow translation of alternative labels when using "humanizeLabels"
-            // Issue #3
-            alt: locale.altMonths || DEFAULT_LOCALE_EN.altMonths,
-          }}
-          setValue={setValue}
-          locale={locale}
-          className={className}
-          humanizeLabels={humanizeLabels}
-          disabled={disabled}
-          readOnly={readOnly}
-          period={period}
-          periodicityOnDoubleClick={periodicityOnDoubleClick}
-          mode={mode}
-        />
-      </Group>
-    </div>
+      <CustomSelect
+        placeholder={locale.emptyMonths || DEFAULT_LOCALE_EN.emptyMonths}
+        optionsList={optionsList}
+        grid={false}
+        value={value}
+        unit={{
+          ...UNITS[3],
+          // Allow translation of alternative labels when using "humanizeLabels"
+          // Issue #3
+          alt: locale.altMonths || DEFAULT_LOCALE_EN.altMonths,
+        }}
+        setValue={setValue}
+        locale={locale}
+        className={className}
+        humanizeLabels={humanizeLabels}
+        disabled={disabled}
+        readOnly={readOnly}
+        period={period}
+        periodicityOnDoubleClick={periodicityOnDoubleClick}
+        mode={mode}
+      />
+    </Group>
   )
 }

@@ -70,7 +70,7 @@ export function Demo() {
 
 export function DynamicSettings() {
   const [displayInput, setDisplayInput] = useState<boolean>(true)
-  const [ConvertUTC, setConvertUTC] = useState<boolean>(false)
+  const [ConvertToTimezone, setConvertTimezone] = useState<boolean>(false)
   const [changeValueOnBlur, setChangeValueOnBlur] = useState<boolean>(true)
   const [changeValueOnEnter, setChangeValueOnEnter] = useState<boolean>(true)
   const [readOnlyInput, setReadOnlyInput] = useState<boolean>(false)
@@ -86,7 +86,7 @@ export function DynamicSettings() {
   const [customStyle, setCustomStyle] = useState<boolean>(false)
   const [allowEmpty, setAllowEmpty] = useState<AllowEmpty>('for-default-value')
   const [clockFormat, setClockFormat] = useState('None')
-  const [Inputvalue, setInputValue] = useState('')
+  const [Inputvalue, setInputValue] = useState('UTC')
   const [locale, setLocale] = useState<string>('english')
   const [defaultPeriod, setDefaultPeriod] = useState<PeriodType>('day')
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('day')
@@ -160,9 +160,9 @@ export function DynamicSettings() {
           onChange={() => setDisplayInput((prevValue) => !prevValue)}
         />
         <Switch
-          label='Convert To UTC'
-          checked={ConvertUTC}
-          onChange={() => setConvertUTC((prevValue) => !prevValue)}
+          label='Convert To Timezone'
+          checked={ConvertToTimezone}
+          onChange={() => setConvertTimezone((prevValue) => !prevValue)}
         />
         <Switch
           label='Disabled'
@@ -256,10 +256,12 @@ export function DynamicSettings() {
             clearButtonLabel='Clear selection'
             style={{ minWidth: 435 }}
             clearable
+            onChange={setAllowedDropdowns}
           />
 
           <MultiSelect
             data={allowedPeriods}
+            onChange={allowedPeriods}
             label='Allowed Periods'
             placeholder='Pick all that you like'
             defaultValue={defaultAllowedPeriods}
@@ -315,7 +317,7 @@ export function DynamicSettings() {
       {/* </Form> */}
 
       <Group position='right'>
-        {/* <p>Value: {values.cronValue}</p> */}
+        <p>Value: {values.cronValue}</p>
 
         <Button
           compact
@@ -389,7 +391,6 @@ export function DynamicSettings() {
           setSelectedPeriod(selectedPeriod)
         }}
         onError={onError}
-        timezone_value={Inputvalue}
         disabled={disabled}
         readOnly={readOnly}
         humanizeLabels={humanizeLabels}
@@ -408,7 +409,8 @@ export function DynamicSettings() {
         allowedDropdowns={allowedDropdowns}
         allowedPeriods={allowedPeriods}
         locale={transformedLocale}
-        convertToUtc={ConvertUTC}
+        convertToTimezone={ConvertToTimezone}
+        timezone_value={Inputvalue}
         // clearButtonProps={
         //   customStyle
         //     ? {

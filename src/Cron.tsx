@@ -10,7 +10,7 @@ import WeekDays from './fields/WeekDays'
 import { classNames, setError, usePrevious } from './utils'
 import { DEFAULT_LOCALE_EN } from './locale'
 import { setValuesFromCronString, getCronStringFromValues } from './converter'
-import { Group, TextInput } from '@mantine/core'
+import { Group, SimpleGrid, TextInput } from '@mantine/core'
 import { Button } from '@mantine/core'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
@@ -20,9 +20,9 @@ import { Switch, Text } from '@mantine/core'
 export default function Cron(props: CronProps) {
   console.log(props.allowedDropdowns)
   const {
-    timezone_value = '',
+    timezone_value = 'UTC',
     clearButton = true,
-    convertToUtc,
+    convertToTimezone = false,
     clearButtonAction = 'fill-with-every',
     locale = DEFAULT_LOCALE_EN,
     value = '',
@@ -68,6 +68,7 @@ export default function Cron(props: CronProps) {
       'reboot',
     ],
   } = props
+  console.log(timezone_value)
   const internalValueRef = useRef<string>(value)
   const defaultPeriodRef = useRef<PeriodType>(defaultPeriod)
   const [period, setPeriod] = useState<PeriodType | undefined>()
@@ -86,16 +87,16 @@ export default function Cron(props: CronProps) {
   const [valueCleared, setValueCleared] = useState<boolean>(false)
   const previousValueCleared = usePrevious(valueCleared)
   const localeJSON = JSON.stringify(locale)
+  //checked boolean const is used for if convertToUTC or timezone_value present it gets true
   const [checked, setChecked] = useState(false)
-  useEffect(() => {
-    if (timezone_value !== '' || convertToUtc == true) {
-      setChecked(true)
-    } else {
-      setChecked(false)
-    }
-  }, [timezone_value, convertToUtc])
-
-  // const [timezone_value, setTimezoneValue] = useState('')
+  //The below code sets checked value true or false if convertToUTC or timezone_value changes
+  // useEffect(() => {
+  //   if (timezone_value !== '' || convertToUtc == true) {
+  //     setChecked(true)
+  //   } else {
+  //     setChecked(false)
+  //   }
+  // }, [timezone_value, convertToUtc])
   useEffect(
     () => {
       setValuesFromCronString(
@@ -151,18 +152,17 @@ export default function Cron(props: CronProps) {
       if (
         (period || minutes || months || monthDays || weekDays || hours) &&
         !valueCleared &&
-        !previousValueCleared &&
-        error === false
+        !previousValueCleared
       ) {
+        console.log({ convertToTimezone })
         const selectedPeriod = period || defaultPeriodRef.current
         const cron = getCronStringFromValues(
           selectedPeriod,
           months,
           monthDays,
           weekDays,
-          checked ? tzhours : hours,
-
-          checked ? tzminutes : minutes,
+          convertToTimezone ? tzhours : hours,
+          convertToTimezone ? tzminutes : minutes,
 
           humanizeValue
         )
@@ -182,16 +182,12 @@ export default function Cron(props: CronProps) {
       monthDays,
       months,
       weekDays,
-      checked ? tzhours : hours,
-
-      // ? utchours
-      // : timezone_value == ''
-      // ? hours
-      // : tzerror == ''
-      // ? tzhours
-      // : hours,
-      checked ? tzminutes : minutes,
+      tzhours,
+      tzminutes,
+      minutes,
+      hours,
       humanizeValue,
+      timezone_value,
       valueCleared,
     ]
   )
@@ -276,17 +272,13 @@ export default function Cron(props: CronProps) {
     () => {
       if (clearButton && !readOnly) {
         return (
-          // <Button
-          //   className={clearButtonClassName}
-          //   danger
-          //   type='primary'
-          //   disabled={disabled}
-          //   {...otherClearButtonProps}
-          //   onClick={handleClear}
-          // >
-          //   {locale.clearButtonText || DEFAULT_LOCALE_EN.clearButtonText}
-          // </Button>
-          <Button ml={5} onClick={handleClear} color='red' size='xs'>
+          <Button
+            disabled={disabled}
+            ml={5}
+            onClick={handleClear}
+            color='red'
+            size='xs'
+          >
             Clear
           </Button>
         )
@@ -310,71 +302,16 @@ export default function Cron(props: CronProps) {
   dayjs.extend(RelativeTime)
   dayjs.extend(utc)
   dayjs.extend(tz)
-  const offSet = new Date().getTimezoneOffset()
   useEffect(() => {
     const hourarr: number[] = []
     const minutearr: number[] = []
-    if (convertToUtc == true) {
-      if (hours && hours.length > 0) {
-        const newh = hours?.map((h) => {
-          if (minutes && minutes.length > 0) {
-            minutes?.map((m) => {
-              hourarr.includes(
-                Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH'))
-              )
-                ? null
-                : hourarr.push(
-                    Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH'))
-                  )
-              minutearr.includes(
-                Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm'))
-              )
-                ? null
-                : minutearr.push(
-                    Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm'))
-                  )
-            })
-          } else {
-            if (
-              Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm')) !== 0
-            ) {
-              hourarr.includes(
-                Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-              )
-                ? null
-                : hourarr.push(
-                    Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-                  )
-              minutearr.includes(
-                Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))
-              )
-                ? null
-                : minutearr.push(
-                    Number(dayjs.utc(dayjs().hour(h).minute(0)).format('mm'))
-                  )
-            } else {
-              hourarr.includes(
-                Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-              )
-                ? null
-                : hourarr.push(
-                    Number(dayjs.utc(dayjs().hour(h).minute(0)).format('HH'))
-                  )
-            }
-          }
-        })
-      }
-      setTzHours(hourarr)
-      setTzMinutes(minutearr)
-    }
-  }, [hours, minutes, convertToUtc, timezone_value])
-
-  useEffect(() => {
-    const hourarr: number[] = []
-    const minutearr: number[] = []
-    if (timezone_value !== '') {
-      console.log(timezone_value)
+    //the below code handles timezone string value and converts to input timezone
+    console.log(convertToTimezone)
+    if (convertToTimezone == true) {
       try {
+        /*Below code loops through hours and minutes  same hour or minutes is already present in
+          hourarr variable then it skips that and if not then it converts to utc and pushes the values
+        */
         if (hours && hours.length > 0) {
           const newh = hours?.map((h) => {
             if (minutes && minutes.length > 0) {
@@ -412,7 +349,10 @@ export default function Cron(props: CronProps) {
                       )
                     )
               })
-            } else {
+            }
+            //if minutes values not present then below code executes
+            //if hour timezone value has minutes then new hour and minutes pushed to the array
+            else {
               if (
                 Number(
                   dayjs().hour(h).minute(0).tz(timezone_value).format('mm')
@@ -450,7 +390,9 @@ export default function Cron(props: CronProps) {
                           .format('mm')
                       )
                     )
-              } else {
+              }
+              //if hour timezone value does not have minutes values then new hour value pushed through array
+              else {
                 hourarr.includes(
                   Number(
                     dayjs().hour(h).minute(0).tz(timezone_value).format('HH')
@@ -471,7 +413,8 @@ export default function Cron(props: CronProps) {
             }
           })
         }
-        console.log(hourarr)
+
+        //the below code sets timezoen hours and minutes and also clears error
         setTzHours(hourarr)
         setTzMinutes(minutearr)
         setInternalError(false)
@@ -492,164 +435,123 @@ export default function Cron(props: CronProps) {
       setTzError('')
       setInternalError(false)
       onError && onError(undefined)
+      setTzHours([])
+      setTzMinutes([])
     }
-  }, [hours, minutes, timezone_value, convertToUtc])
+  }, [hours, minutes, timezone_value, convertToTimezone])
 
   return (
     <>
-      {/* {allowedDropdowns.includes('switch') && (
-        <div>
-          <Switch
-            mb={10}
-            label='Convert to other timezone'
-            checked={checked}
-            onChange={(event) => setChecked(event.currentTarget.checked)}
+      {/* <div className={internalClassName}> */}
+      <Group align='baseline'>
+        {allowedDropdowns.includes('period') && (
+          <Period
+            value={periodForRender}
+            setValue={setPeriod}
+            locale={locale}
+            className={className}
+            disabled={disabled}
+            readOnly={readOnly}
+            shortcuts={shortcuts}
+            allowedPeriods={allowedPeriods}
           />
-          {checked ? (
-            <>
-              <Group mb={10}>
-                <TextInput
-                  placeholder='Enter Timezone'
-                  label='Please Enter Timezone to Convert'
-                  value={timezone_value}
-                  onChange={(event) =>
-                    setTimezoneValue(event.currentTarget.value)
-                  }
+        )}
+        {periodForRender === 'reboot' ? (
+          clearButtonNode
+        ) : (
+          <>
+            {periodForRender === 'year' &&
+              allowedDropdowns.includes('months') && (
+                <Months
+                  value={months}
+                  setValue={setMonths}
+                  locale={locale}
+                  className={className}
+                  humanizeLabels={humanizeLabels}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
                 />
-              </Group>
-            </>
-          ) : null}
-          </div>
-        )} */}
-      {/* {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null} */}
-      <div className={internalClassName}>
-        <Group>
-          {allowedDropdowns.includes('period') && (
-            <Period
-              value={periodForRender}
-              setValue={setPeriod}
-              locale={locale}
-              className={className}
-              disabled={disabled}
-              readOnly={readOnly}
-              shortcuts={shortcuts}
-              allowedPeriods={allowedPeriods}
-            />
-          )}
-          {periodForRender === 'reboot' ? (
-            clearButtonNode
-          ) : (
-            <>
-              {periodForRender === 'year' &&
-                allowedDropdowns.includes('months') && (
-                  <Months
-                    value={months}
-                    setValue={setMonths}
-                    locale={locale}
-                    className={className}
-                    humanizeLabels={humanizeLabels}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+              )}
 
-              {(periodForRender === 'year' || periodForRender === 'month') &&
-                allowedDropdowns.includes('month-days') && (
-                  <MonthDays
-                    value={monthDays}
-                    setValue={setMonthDays}
-                    locale={locale}
-                    className={className}
-                    weekDays={weekDays}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    leadingZero={leadingZero}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+            {(periodForRender === 'year' || periodForRender === 'month') &&
+              allowedDropdowns.includes('month-days') && (
+                <MonthDays
+                  value={monthDays}
+                  setValue={setMonthDays}
+                  locale={locale}
+                  className={className}
+                  weekDays={weekDays}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-              {(periodForRender === 'year' ||
-                periodForRender === 'month' ||
-                periodForRender === 'week') &&
-                allowedDropdowns.includes('week-days') && (
-                  <WeekDays
-                    value={weekDays}
-                    setValue={setWeekDays}
-                    locale={locale}
-                    className={className}
-                    humanizeLabels={humanizeLabels}
-                    monthDays={monthDays}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+            {(periodForRender === 'year' ||
+              periodForRender === 'month' ||
+              periodForRender === 'week') &&
+              allowedDropdowns.includes('week-days') && (
+                <WeekDays
+                  value={weekDays}
+                  setValue={setWeekDays}
+                  locale={locale}
+                  className={className}
+                  humanizeLabels={humanizeLabels}
+                  monthDays={monthDays}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                }}
-              >
-                {periodForRender !== 'minute' &&
-                  periodForRender !== 'hour' &&
-                  allowedDropdowns.includes('hours') && (
-                    <Hours
-                      value={hours}
-                      setValue={setHours}
-                      locale={locale}
-                      className={className}
-                      disabled={disabled}
-                      readOnly={readOnly}
-                      leadingZero={leadingZero}
-                      clockFormat={clockFormat}
-                      period={periodForRender}
-                      periodicityOnDoubleClick={periodicityOnDoubleClick}
-                      mode={mode}
-                    />
-                  )}
+            {periodForRender !== 'minute' &&
+              periodForRender !== 'hour' &&
+              allowedDropdowns.includes('hours') && (
+                <Hours
+                  value={hours}
+                  setValue={setHours}
+                  locale={locale}
+                  className={className}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  clockFormat={clockFormat}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-                {periodForRender !== 'minute' &&
-                  allowedDropdowns.includes('minutes') && (
-                    <Minutes
-                      value={minutes}
-                      setValue={setMinutes}
-                      locale={locale}
-                      period={periodForRender}
-                      className={className}
-                      disabled={disabled}
-                      readOnly={readOnly}
-                      leadingZero={leadingZero}
-                      clockFormat={clockFormat}
-                      periodicityOnDoubleClick={periodicityOnDoubleClick}
-                      mode={mode}
-                    />
-                  )}
-
-                {clearButtonNode}
-              </div>
-            </>
-          )}
-        </Group>
-      </div>
-      <Group>
-        {' '}
-        <Text>
-          Final Output:{' '}
-          {!error ? (
-            <Text weight={700} component='span'>
-              {value}
-            </Text>
-          ) : null}
-        </Text>
+            {periodForRender !== 'minute' &&
+              allowedDropdowns.includes('minutes') && (
+                <Minutes
+                  value={minutes}
+                  setValue={setMinutes}
+                  locale={locale}
+                  period={periodForRender}
+                  className={className}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  clockFormat={clockFormat}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
+          </>
+        )}
+        <div>{clearButtonNode}</div>
+        {/* </SimpleGrid> */}
       </Group>
+      {/* </div> */}
     </>
   )
 }

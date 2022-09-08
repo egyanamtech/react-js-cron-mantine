@@ -276,60 +276,18 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   return (
     <>
-      <Group align='baseline'>
-        {/* {console.log(stringValue)} */}
-        {/* <Select<string[] | undefined>
-        // Use 'multiple' instead of 'tags‘ mode
-        // cf: Issue #2
-        mode={
-          mode === 'single' && !periodicityOnDoubleClick
-            ? undefined
-            : 'multiple'
-        }
-        allowClear={!readOnly}
-        virtual={false}
-        open={readOnly ? false : undefined}
+      <MultiSelect
+        data={options}
         value={stringValue}
-        onClear={onClear}
-        tagRender={renderTag}
-        className={internalClassName}
-        dropdownClassName={dropdownClassNames}
-        options={options}
-        showSearch={false}
-        showArrow={!readOnly}
-        menuItemSelectedIcon={null}
-        dropdownMatchSelectWidth={false}
-        onSelect={onOptionClick}
-        onDeselect={onOptionClick}
         disabled={disabled}
-        dropdownAlign={
-          (unit.type === 'minutes' || unit.type === 'hours') &&
-          period !== 'day' &&
-          period !== 'hour'
-            ? {
-                // Usage: https://github.com/yiminghe/dom-align
-                // Set direction to left to prevent dropdown to overlap window
-                points: ['tr', 'br'],
-              }
-            : undefined
-        }
-        data-testid={`custom-select-${unit.type}`}
-        {...otherProps}
-      /> */}
-        {/* {console.log(otherProps.placeholder)} */}
-        <MultiSelect
-          ml={5}
-          data={options}
-          value={stringValue}
-          disabled={disabled}
-          // rightSection={<IconChevronDown size={14} />}
-          styles={{ rightSection: { pointerEvents: 'none' } }}
-          rightSectionWidth={40}
-          onChange={(e) => simpleClickMantine(e)}
-          clearable
-          placeholder={otherProps?.placeholder?.toString()}
-        />
-      </Group>
+        sx={{ width: '100%' }}
+        // rightSection={<IconChevronDown size={14} />}
+        styles={{ rightSection: { pointerEvents: 'none' } }}
+        rightSectionWidth={40}
+        onChange={(e) => simpleClickMantine(e)}
+        clearable
+        placeholder={otherProps?.placeholder?.toString()}
+      />
     </>
   )
 }

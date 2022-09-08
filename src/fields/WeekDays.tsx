@@ -65,45 +65,43 @@ export default function WeekDays(props: WeekDaysProps) {
       style={{ display: 'flex', alignItems: 'baseline' }}
       // className={internalClassName}
     >
-      <Group align='baseline'>
-        {locale.prefixWeekDays !== '' &&
-          (period === 'week' || !monthDaysIsDisplayed) && (
-            <span>
-              {locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}
-            </span>
-          )}
+      {locale.prefixWeekDays !== '' &&
+        (period === 'week' || !monthDaysIsDisplayed) && (
+          <span>
+            {locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}
+          </span>
+        )}
 
-        {locale.prefixWeekDaysForMonthAndYearPeriod !== '' &&
-          period !== 'week' &&
-          monthDaysIsDisplayed && (
-            <span>
-              {locale.prefixWeekDaysForMonthAndYearPeriod ||
-                DEFAULT_LOCALE_EN.prefixWeekDaysForMonthAndYearPeriod}
-            </span>
-          )}
+      {locale.prefixWeekDaysForMonthAndYearPeriod !== '' &&
+        period !== 'week' &&
+        monthDaysIsDisplayed && (
+          <span>
+            {locale.prefixWeekDaysForMonthAndYearPeriod ||
+              DEFAULT_LOCALE_EN.prefixWeekDaysForMonthAndYearPeriod}
+          </span>
+        )}
 
-        <CustomSelect
-          placeholder={placeholder}
-          optionsList={optionsList}
-          grid={false}
-          value={value}
-          unit={{
-            ...UNITS[4],
-            // Allow translation of alternative labels when using "humanizeLabels"
-            // Issue #3
-            alt: locale.altWeekDays || DEFAULT_LOCALE_EN.altWeekDays,
-          }}
-          setValue={setValue}
-          locale={locale}
-          className={className}
-          humanizeLabels={humanizeLabels}
-          disabled={disabled}
-          readOnly={readOnly}
-          period={period}
-          periodicityOnDoubleClick={periodicityOnDoubleClick}
-          mode={mode}
-        />
-      </Group>
+      <CustomSelect
+        placeholder={placeholder}
+        optionsList={optionsList}
+        grid={false}
+        value={value}
+        unit={{
+          ...UNITS[4],
+          // Allow translation of alternative labels when using "humanizeLabels"
+          // Issue #3
+          alt: locale.altWeekDays || DEFAULT_LOCALE_EN.altWeekDays,
+        }}
+        setValue={setValue}
+        locale={locale}
+        className={className}
+        humanizeLabels={humanizeLabels}
+        disabled={disabled}
+        readOnly={readOnly}
+        period={period}
+        periodicityOnDoubleClick={periodicityOnDoubleClick}
+        mode={mode}
+      />
     </div>
   ) : null
 }
