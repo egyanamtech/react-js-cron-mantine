@@ -276,8 +276,9 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   return (
     <>
-      {/* {console.log(stringValue)} */}
-      {/* <Select<string[] | undefined>
+      <Group align='baseline'>
+        {/* {console.log(stringValue)} */}
+        {/* <Select<string[] | undefined>
         // Use 'multiple' instead of 'tags‘ mode
         // cf: Issue #2
         mode={
@@ -315,18 +316,20 @@ export default function CustomSelect(props: CustomSelectProps) {
         data-testid={`custom-select-${unit.type}`}
         {...otherProps}
       /> */}
-      {/* {console.log(otherProps.placeholder)} */}
-      <MultiSelect
-        ml={5}
-        data={options}
-        value={stringValue}
-        // rightSection={<IconChevronDown size={14} />}
-        styles={{ rightSection: { pointerEvents: 'none' } }}
-        rightSectionWidth={40}
-        onChange={(e) => simpleClickMantine(e)}
-        clearable
-        placeholder={otherProps?.placeholder?.toString()}
-      />
+        {/* {console.log(otherProps.placeholder)} */}
+        <MultiSelect
+          ml={5}
+          data={options}
+          value={stringValue}
+          disabled={disabled}
+          // rightSection={<IconChevronDown size={14} />}
+          styles={{ rightSection: { pointerEvents: 'none' } }}
+          rightSectionWidth={40}
+          onChange={(e) => simpleClickMantine(e)}
+          clearable
+          placeholder={otherProps?.placeholder?.toString()}
+        />
+      </Group>
     </>
   )
 }

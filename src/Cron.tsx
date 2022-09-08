@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 // import Button from 'antd/lib/button'
-
 import { CronProps, PeriodType } from './types'
 import Period from './fields/Period'
 import MonthDays from './fields/MonthDays'
@@ -19,8 +18,11 @@ import tz from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import { Switch, Text } from '@mantine/core'
 export default function Cron(props: CronProps) {
+  console.log(props.allowedDropdowns)
   const {
+    timezone_value = '',
     clearButton = true,
+    convertToUtc,
     clearButtonAction = 'fill-with-every',
     locale = DEFAULT_LOCALE_EN,
     value = '',
@@ -85,7 +87,15 @@ export default function Cron(props: CronProps) {
   const previousValueCleared = usePrevious(valueCleared)
   const localeJSON = JSON.stringify(locale)
   const [checked, setChecked] = useState(false)
-  const [timezone_value, setTimezoneValue] = useState('')
+  useEffect(() => {
+    if (timezone_value !== '' || convertToUtc == true) {
+      setChecked(true)
+    } else {
+      setChecked(false)
+    }
+  }, [timezone_value, convertToUtc])
+
+  // const [timezone_value, setTimezoneValue] = useState('')
   useEffect(
     () => {
       setValuesFromCronString(
@@ -141,7 +151,8 @@ export default function Cron(props: CronProps) {
       if (
         (period || minutes || months || monthDays || weekDays || hours) &&
         !valueCleared &&
-        !previousValueCleared
+        !previousValueCleared &&
+        error === false
       ) {
         const selectedPeriod = period || defaultPeriodRef.current
         const cron = getCronStringFromValues(
@@ -159,7 +170,7 @@ export default function Cron(props: CronProps) {
         setValue(cron, { selectedPeriod })
         internalValueRef.current = cron
 
-        onError && onError(undefined)
+        // onError && onError(undefined)
         setInternalError(false)
       } else if (valueCleared) {
         setValueCleared(false)
@@ -192,7 +203,6 @@ export default function Cron(props: CronProps) {
       setWeekDays([])
       setHours([])
       setMinutes([])
-      setTimezoneValue('')
 
       // When clearButtonAction is 'empty'
       let newValue = ''
@@ -225,9 +235,9 @@ export default function Cron(props: CronProps) {
 
       if (allowEmpty === 'never' && clearButtonAction === 'empty') {
         setInternalError(true)
-        setError(onError, locale)
+        // setError(onError, locale)
       } else {
-        onError && onError(undefined)
+        // onError && onError(undefined)
         setInternalError(false)
       }
     },
@@ -300,16 +310,11 @@ export default function Cron(props: CronProps) {
   dayjs.extend(RelativeTime)
   dayjs.extend(utc)
   dayjs.extend(tz)
-  // console.log(dayjs.utc())
   const offSet = new Date().getTimezoneOffset()
-  // Number(dayjs.utc(dayjs().hour(hours![0]).minute(minutes![0])).format('mm'))
-  console.log(value)
-
   useEffect(() => {
     const hourarr: number[] = []
     const minutearr: number[] = []
-    // console.log({ hours, minutes })
-    if (timezone_value == '' && checked == true) {
+    if (convertToUtc == true) {
       if (hours && hours.length > 0) {
         const newh = hours?.map((h) => {
           if (minutes && minutes.length > 0) {
@@ -328,11 +333,6 @@ export default function Cron(props: CronProps) {
                 : minutearr.push(
                     Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm'))
                   )
-
-              // return {
-              //   h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
-              //   m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
-              // }
             })
           } else {
             if (
@@ -367,12 +367,13 @@ export default function Cron(props: CronProps) {
       setTzHours(hourarr)
       setTzMinutes(minutearr)
     }
-  }, [hours, minutes, checked, timezone_value])
+  }, [hours, minutes, convertToUtc, timezone_value])
 
   useEffect(() => {
     const hourarr: number[] = []
     const minutearr: number[] = []
-    if (timezone_value !== '' && checked == true) {
+    if (timezone_value !== '') {
+      console.log(timezone_value)
       try {
         if (hours && hours.length > 0) {
           const newh = hours?.map((h) => {
@@ -410,11 +411,6 @@ export default function Cron(props: CronProps) {
                           .format('mm')
                       )
                     )
-
-                // return {
-                //   h: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('HH')),
-                //   m: Number(dayjs.utc(dayjs().hour(h).minute(m)).format('mm')),
-                // }
               })
             } else {
               if (
@@ -478,19 +474,30 @@ export default function Cron(props: CronProps) {
         console.log(hourarr)
         setTzHours(hourarr)
         setTzMinutes(minutearr)
+        setInternalError(false)
+        onError && onError(undefined)
         setTzError('')
       } catch (err) {
         setTzError(err.message)
+        onError && onError({ type: 'invalid_cron', description: err.message })
+        setInternalError(true)
+        // onError && onError({ type: 'invalid_cron', description: err.message })
+
+        // setError(onError, (locale.errorInvalidCron = err.message))
+        // onError()
+        // onError({type:"invalid_cron" ,description:err.message})
         console.log(err.message)
       }
     } else {
       setTzError('')
+      setInternalError(false)
+      onError && onError(undefined)
     }
-  }, [hours, minutes, timezone_value, checked])
+  }, [hours, minutes, timezone_value, convertToUtc])
 
   return (
     <>
-      {allowedDropdowns.includes('switch') && (
+      {/* {allowedDropdowns.includes('switch') && (
         <div>
           <Switch
             mb={10}
@@ -509,138 +516,138 @@ export default function Cron(props: CronProps) {
                     setTimezoneValue(event.currentTarget.value)
                   }
                 />
-                {/* <Button onClick={() => updateTimezone()}>Submit</Button> */}
               </Group>
             </>
           ) : null}
-          {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null}
-        </div>
-      )}
+          </div>
+        )} */}
+      {/* {tzerror !== '' ? <Text color='red'>{tzerror}</Text> : null} */}
       <div className={internalClassName}>
-        {/* <Group> */}
-
-        {allowedDropdowns.includes('period') && (
-          <Period
-            value={periodForRender}
-            setValue={setPeriod}
-            locale={locale}
-            className={className}
-            disabled={disabled}
-            readOnly={readOnly}
-            shortcuts={shortcuts}
-            allowedPeriods={allowedPeriods}
-          />
-        )}
-        {periodForRender === 'reboot' ? (
-          clearButtonNode
-        ) : (
-          <>
-            {periodForRender === 'year' &&
-              allowedDropdowns.includes('months') && (
-                <Months
-                  value={months}
-                  setValue={setMonths}
-                  locale={locale}
-                  className={className}
-                  humanizeLabels={humanizeLabels}
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  period={periodForRender}
-                  periodicityOnDoubleClick={periodicityOnDoubleClick}
-                  mode={mode}
-                />
-              )}
-
-            {(periodForRender === 'year' || periodForRender === 'month') &&
-              allowedDropdowns.includes('month-days') && (
-                <MonthDays
-                  value={monthDays}
-                  setValue={setMonthDays}
-                  locale={locale}
-                  className={className}
-                  weekDays={weekDays}
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  leadingZero={leadingZero}
-                  period={periodForRender}
-                  periodicityOnDoubleClick={periodicityOnDoubleClick}
-                  mode={mode}
-                />
-              )}
-
-            {(periodForRender === 'year' ||
-              periodForRender === 'month' ||
-              periodForRender === 'week') &&
-              allowedDropdowns.includes('week-days') && (
-                <WeekDays
-                  value={weekDays}
-                  setValue={setWeekDays}
-                  locale={locale}
-                  className={className}
-                  humanizeLabels={humanizeLabels}
-                  monthDays={monthDays}
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  period={periodForRender}
-                  periodicityOnDoubleClick={periodicityOnDoubleClick}
-                  mode={mode}
-                />
-              )}
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'baseline',
-              }}
-            >
-              {periodForRender !== 'minute' &&
-                periodForRender !== 'hour' &&
-                allowedDropdowns.includes('hours') && (
-                  <Hours
-                    value={hours}
-                    setValue={setHours}
+        <Group>
+          {allowedDropdowns.includes('period') && (
+            <Period
+              value={periodForRender}
+              setValue={setPeriod}
+              locale={locale}
+              className={className}
+              disabled={disabled}
+              readOnly={readOnly}
+              shortcuts={shortcuts}
+              allowedPeriods={allowedPeriods}
+            />
+          )}
+          {periodForRender === 'reboot' ? (
+            clearButtonNode
+          ) : (
+            <>
+              {periodForRender === 'year' &&
+                allowedDropdowns.includes('months') && (
+                  <Months
+                    value={months}
+                    setValue={setMonths}
                     locale={locale}
                     className={className}
+                    humanizeLabels={humanizeLabels}
                     disabled={disabled}
                     readOnly={readOnly}
-                    leadingZero={leadingZero}
-                    clockFormat={clockFormat}
                     period={periodForRender}
                     periodicityOnDoubleClick={periodicityOnDoubleClick}
                     mode={mode}
                   />
                 )}
 
-              {periodForRender !== 'minute' &&
-                allowedDropdowns.includes('minutes') && (
-                  <Minutes
-                    value={minutes}
-                    setValue={setMinutes}
+              {(periodForRender === 'year' || periodForRender === 'month') &&
+                allowedDropdowns.includes('month-days') && (
+                  <MonthDays
+                    value={monthDays}
+                    setValue={setMonthDays}
                     locale={locale}
-                    period={periodForRender}
                     className={className}
+                    weekDays={weekDays}
                     disabled={disabled}
                     readOnly={readOnly}
                     leadingZero={leadingZero}
-                    clockFormat={clockFormat}
+                    period={periodForRender}
                     periodicityOnDoubleClick={periodicityOnDoubleClick}
                     mode={mode}
                   />
                 )}
 
-              {clearButtonNode}
-            </div>
-          </>
-        )}
-        {/* </Group> */}
+              {(periodForRender === 'year' ||
+                periodForRender === 'month' ||
+                periodForRender === 'week') &&
+                allowedDropdowns.includes('week-days') && (
+                  <WeekDays
+                    value={weekDays}
+                    setValue={setWeekDays}
+                    locale={locale}
+                    className={className}
+                    humanizeLabels={humanizeLabels}
+                    monthDays={monthDays}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    period={periodForRender}
+                    periodicityOnDoubleClick={periodicityOnDoubleClick}
+                    mode={mode}
+                  />
+                )}
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                }}
+              >
+                {periodForRender !== 'minute' &&
+                  periodForRender !== 'hour' &&
+                  allowedDropdowns.includes('hours') && (
+                    <Hours
+                      value={hours}
+                      setValue={setHours}
+                      locale={locale}
+                      className={className}
+                      disabled={disabled}
+                      readOnly={readOnly}
+                      leadingZero={leadingZero}
+                      clockFormat={clockFormat}
+                      period={periodForRender}
+                      periodicityOnDoubleClick={periodicityOnDoubleClick}
+                      mode={mode}
+                    />
+                  )}
+
+                {periodForRender !== 'minute' &&
+                  allowedDropdowns.includes('minutes') && (
+                    <Minutes
+                      value={minutes}
+                      setValue={setMinutes}
+                      locale={locale}
+                      period={periodForRender}
+                      className={className}
+                      disabled={disabled}
+                      readOnly={readOnly}
+                      leadingZero={leadingZero}
+                      clockFormat={clockFormat}
+                      periodicityOnDoubleClick={periodicityOnDoubleClick}
+                      mode={mode}
+                    />
+                  )}
+
+                {clearButtonNode}
+              </div>
+            </>
+          )}
+        </Group>
       </div>
       <Group>
         {' '}
         <Text>
           Final Output:{' '}
-          <Text weight={700} component='span'>
-            {value}
-          </Text>
+          {!error ? (
+            <Text weight={700} component='span'>
+              {value}
+            </Text>
+          ) : null}
         </Text>
       </Group>
     </>

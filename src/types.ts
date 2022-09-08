@@ -92,7 +92,18 @@ export interface CronProps {
    * Default: true
    */
   clearButton?: boolean
-
+  /**
+   * Display the convertToUtc.
+   *
+   * Default: false
+   */
+  convertToUtc?: boolean
+  /**
+   * Display the convertToUtc.
+   *
+   * Default: ""
+   */
+  timezone_value?: string
   /**
    * antd button props to customize the clear button.
    */
@@ -141,14 +152,14 @@ export interface CronProps {
   /**
    * Define which dropdowns need to be displayed.
    *
-   * Default: ['period', 'months', 'month-days', 'week-days', 'hours', 'minutes']
+   * Default: ['period', 'months', 'month-days', 'week-days', 'hours', 'minutes',switch]
    */
   allowedDropdowns?: CronType[]
 
   /**
    * Define the list of periods available.
    *
-   * Default: ['year', 'month', 'week', 'day', 'hour', 'minute', 'reboot']
+  //  * Default: ['year', 'month', 'week', 'day', 'hour', 'minute', 'reboot',"switch"]
    */
   allowedPeriods?: PeriodType[]
 
@@ -229,6 +240,7 @@ export type PeriodType =
   | 'day'
   | 'hour'
   | 'minute'
+  | 'switch'
   | 'reboot'
 export type AllowEmpty = 'always' | 'never' | 'for-default-value'
 export type CronType =

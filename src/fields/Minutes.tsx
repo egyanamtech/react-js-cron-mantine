@@ -5,6 +5,7 @@ import { MinutesProps } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function Minutes(props: MinutesProps) {
   const {
@@ -32,47 +33,49 @@ export default function Minutes(props: MinutesProps) {
   )
 
   return (
-    <div className={internalClassName}>
-      {period === 'hour'
-        ? locale.prefixMinutesForHourPeriod !== '' && (
-            <span>
-              {locale.prefixMinutesForHourPeriod ||
-                DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
-            </span>
-          )
-        : locale.prefixMinutes !== '' && (
-            <span>
-              {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
-            </span>
-          )}
+    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+      <Group align='baseline'>
+        {period === 'hour'
+          ? locale.prefixMinutesForHourPeriod !== '' && (
+              <span>
+                {locale.prefixMinutesForHourPeriod ||
+                  DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
+              </span>
+            )
+          : locale.prefixMinutes !== '' && (
+              <span>
+                {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
+              </span>
+            )}
 
-      <CustomSelect
-        placeholder={
-          period === 'hour'
-            ? locale.emptyMinutesForHourPeriod ||
-              DEFAULT_LOCALE_EN.emptyMinutesForHourPeriod
-            : locale.emptyMinutes || DEFAULT_LOCALE_EN.emptyMinutes
-        }
-        value={value}
-        unit={UNITS[0]}
-        setValue={setValue}
-        locale={locale}
-        className={className}
-        disabled={disabled}
-        readOnly={readOnly}
-        leadingZero={leadingZero}
-        clockFormat={clockFormat}
-        period={period}
-        periodicityOnDoubleClick={periodicityOnDoubleClick}
-        mode={mode}
-      />
+        <CustomSelect
+          placeholder={
+            period === 'hour'
+              ? locale.emptyMinutesForHourPeriod ||
+                DEFAULT_LOCALE_EN.emptyMinutesForHourPeriod
+              : locale.emptyMinutes || DEFAULT_LOCALE_EN.emptyMinutes
+          }
+          value={value}
+          unit={UNITS[0]}
+          setValue={setValue}
+          locale={locale}
+          className={className}
+          disabled={disabled}
+          readOnly={readOnly}
+          leadingZero={leadingZero}
+          clockFormat={clockFormat}
+          period={period}
+          periodicityOnDoubleClick={periodicityOnDoubleClick}
+          mode={mode}
+        />
 
-      {period === 'hour' && locale.suffixMinutesForHourPeriod !== '' && (
-        <span>
-          {locale.suffixMinutesForHourPeriod ||
-            DEFAULT_LOCALE_EN.suffixMinutesForHourPeriod}
-        </span>
-      )}
+        {period === 'hour' && locale.suffixMinutesForHourPeriod !== '' && (
+          <span>
+            {locale.suffixMinutesForHourPeriod ||
+              DEFAULT_LOCALE_EN.suffixMinutesForHourPeriod}
+          </span>
+        )}
+      </Group>
     </div>
   )
 }

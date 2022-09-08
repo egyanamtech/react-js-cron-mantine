@@ -105,6 +105,8 @@ div.react-js-cron-custom-select .ant-select-selection-placeholder {
   .react-js-cron-select.ant-select-single.ant-select-open
   .ant-select-selection-item {
   opacity: 1;
+  display: flex;
+    align-items: baseline;
 }
 .react-js-cron-select-dropdown-period {
   min-width: 0 !important;

@@ -5,6 +5,7 @@ import { MonthDaysProps } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function MonthDays(props: MonthDaysProps) {
   const {
@@ -53,27 +54,32 @@ export default function MonthDays(props: MonthDaysProps) {
     ((!value || value.length === 0) && (!weekDays || weekDays.length === 0))
 
   return displayMonthDays ? (
-    <div className={internalClassName}>
-      {locale.prefixMonthDays !== '' && (
-        <span>
-          {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
-        </span>
-      )}
+    <div
+      style={{ display: 'flex', alignItems: 'baseline' }}
+      // className={internalClassName}
+    >
+      <Group align='baseline'>
+        {locale.prefixMonthDays !== '' && (
+          <span>
+            {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
+          </span>
+        )}
 
-      <CustomSelect
-        placeholder={placeholder}
-        value={value}
-        setValue={setValue}
-        unit={UNITS[2]}
-        locale={locale}
-        className={className}
-        disabled={disabled}
-        readOnly={readOnly}
-        leadingZero={leadingZero}
-        period={period}
-        periodicityOnDoubleClick={periodicityOnDoubleClick}
-        mode={mode}
-      />
+        <CustomSelect
+          placeholder={placeholder}
+          value={value}
+          setValue={setValue}
+          unit={UNITS[2]}
+          locale={locale}
+          className={className}
+          disabled={disabled}
+          readOnly={readOnly}
+          leadingZero={leadingZero}
+          period={period}
+          periodicityOnDoubleClick={periodicityOnDoubleClick}
+          mode={mode}
+        />
+      </Group>
     </div>
   ) : null
 }
