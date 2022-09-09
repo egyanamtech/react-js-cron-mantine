@@ -85,7 +85,7 @@ export function DynamicSettings() {
   const [removePrefixSuffix, setRemovePrefixSuffix] = useState<boolean>(false)
   const [customStyle, setCustomStyle] = useState<boolean>(false)
   const [allowEmpty, setAllowEmpty] = useState<AllowEmpty>('for-default-value')
-  const [clockFormat, setClockFormat] = useState('None')
+  const [clockFormat, setClockFormat] = useState<ClockFormat | ''>('')
   const [Inputvalue, setInputValue] = useState('UTC')
   const [locale, setLocale] = useState<string>('english')
   const [defaultPeriod, setDefaultPeriod] = useState<PeriodType>('day')
@@ -99,7 +99,7 @@ export function DynamicSettings() {
   const [values, dispatchValues] = useCronReducer(defaultValue)
   const [error, onError] = useState<CronError>()
   const [clearButtonAction, setClearButtonAction] =
-    useState<string>('fill-with-every')
+    useState<ClearButtonAction>('fill-with-every')
   const defaultAllowedDropdowns: CronType[] = [
     'period',
     'months',
@@ -261,7 +261,7 @@ export function DynamicSettings() {
 
           <MultiSelect
             data={allowedPeriods}
-            onChange={allowedPeriods}
+            onChange={setAllowedPeriods}
             label='Allowed Periods'
             placeholder='Pick all that you like'
             defaultValue={defaultAllowedPeriods}
@@ -1286,15 +1286,15 @@ export function Shortcuts() {
         </span>
       </div>
 
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={data}
         showHeader={false}
         bordered
         pagination={false}
         style={{ marginTop: 20 }}
-        title={() => <h3>Supported shortcuts</h3>}
-      />
+        // title={() => <h3>Supported shortcuts</h3>}
+      /> */}
     </div>
   )
 }

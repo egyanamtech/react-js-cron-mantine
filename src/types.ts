@@ -232,7 +232,7 @@ export type OnError =
 export interface ClearButtonProps {
   className: string | undefined
 }
-export type ClearButtonAction = 'empty' | 'fill-with-every'
+export type ClearButtonAction = 'empty' | 'fill-with-every' | string
 export type PeriodType =
   | 'year'
   | 'month'
@@ -242,6 +242,8 @@ export type PeriodType =
   | 'minute'
   | 'switch'
   | 'reboot'
+  | string
+// export type PeriodTypeA = PeriodType | string
 export type AllowEmpty = 'always' | 'never' | 'for-default-value'
 export type CronType =
   | 'period'
@@ -251,10 +253,11 @@ export type CronType =
   | 'hours'
   | 'minutes'
   | 'switch'
+  | string
 
 export type LeadingZeroType = 'month-days' | 'hours' | 'minutes'
 export type LeadingZero = boolean | LeadingZeroType[]
-export type ClockFormat = '24-hour-clock' | '12-hour-clock'
+export type ClockFormat = '24-hour-clock' | '12-hour-clock' | string
 export type ShortcutsType =
   | '@yearly'
   | '@annually'
