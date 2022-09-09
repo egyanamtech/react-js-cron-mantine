@@ -36,13 +36,13 @@ export default function Minutes(props: MinutesProps) {
     <div style={{ display: 'flex', alignItems: 'baseline' }}>
       {period === 'hour'
         ? locale.prefixMinutesForHourPeriod !== '' && (
-            <span>
+            <span style={{ marginRight: '5px' }}>
               {locale.prefixMinutesForHourPeriod ||
                 DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
             </span>
           )
         : locale.prefixMinutes !== '' && (
-            <span>
+            <span style={{ marginRight: '5px' }}>
               {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
             </span>
           )}

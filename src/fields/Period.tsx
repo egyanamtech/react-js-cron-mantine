@@ -117,11 +117,14 @@ export default function Period(props: PeriodProps) {
   )
 
   return (
-    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {locale.prefixPeriod !== '' && (
-        <span>{locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}</span>
+        <span style={{ marginRight: '5px' }}>
+          {locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}
+        </span>
       )}
       <Select
+        sx={{ width: '100%' }}
         ml={5}
         key={JSON.stringify(locale)}
         // defaultValue={value}

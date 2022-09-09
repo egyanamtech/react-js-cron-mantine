@@ -67,7 +67,7 @@ export default function WeekDays(props: WeekDaysProps) {
     >
       {locale.prefixWeekDays !== '' &&
         (period === 'week' || !monthDaysIsDisplayed) && (
-          <span>
+          <span style={{ marginRight: '5px' }}>
             {locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}
           </span>
         )}
@@ -75,7 +75,7 @@ export default function WeekDays(props: WeekDaysProps) {
       {locale.prefixWeekDaysForMonthAndYearPeriod !== '' &&
         period !== 'week' &&
         monthDaysIsDisplayed && (
-          <span>
+          <span style={{ marginRight: '5px' }}>
             {locale.prefixWeekDaysForMonthAndYearPeriod ||
               DEFAULT_LOCALE_EN.prefixWeekDaysForMonthAndYearPeriod}
           </span>

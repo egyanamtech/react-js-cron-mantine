@@ -58,28 +58,26 @@ export default function MonthDays(props: MonthDaysProps) {
       style={{ display: 'flex', alignItems: 'baseline' }}
       // className={internalClassName}
     >
-      <Group align='baseline'>
-        {locale.prefixMonthDays !== '' && (
-          <span>
-            {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
-          </span>
-        )}
+      {locale.prefixMonthDays !== '' && (
+        <span style={{ marginRight: '5px' }}>
+          {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
+        </span>
+      )}
 
-        <CustomSelect
-          placeholder={placeholder}
-          value={value}
-          setValue={setValue}
-          unit={UNITS[2]}
-          locale={locale}
-          className={className}
-          disabled={disabled}
-          readOnly={readOnly}
-          leadingZero={leadingZero}
-          period={period}
-          periodicityOnDoubleClick={periodicityOnDoubleClick}
-          mode={mode}
-        />
-      </Group>
+      <CustomSelect
+        placeholder={placeholder}
+        value={value}
+        setValue={setValue}
+        unit={UNITS[2]}
+        locale={locale}
+        className={className}
+        disabled={disabled}
+        readOnly={readOnly}
+        leadingZero={leadingZero}
+        period={period}
+        periodicityOnDoubleClick={periodicityOnDoubleClick}
+        mode={mode}
+      />
     </div>
   ) : null
 }
