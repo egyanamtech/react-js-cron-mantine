@@ -1700,9 +1700,6 @@ export function CustomStyle() {
         }}
         onError={onError}
         className='my-project-cron'
-        clearButtonProps={{
-          type: 'default',
-        }}
       />
 
       <div>
