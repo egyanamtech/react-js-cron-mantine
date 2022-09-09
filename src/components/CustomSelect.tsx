@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback, useRef } from 'react'
-// import Select from 'antd/lib/select'
 import {
   CloseButton,
   Group,
@@ -14,7 +13,6 @@ import { CustomSelectProps, Clicks } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames, sort } from '../utils'
 import { parsePartArray, partToString, formatValue } from '../converter'
-import Select from 'antd/lib/select'
 
 export default function CustomSelect(props: CustomSelectProps) {
   const {
@@ -117,7 +115,7 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   const simpleClick = useCallback(
     (newValueOption: number | number[]) => {
-      console.log({ newValueOption })
+      // console.log({ newValueOption })
       const newValueOptions = Array.isArray(newValueOption)
         ? sort(newValueOption)
         : [newValueOption]
@@ -140,7 +138,7 @@ export default function CustomSelect(props: CustomSelectProps) {
       if (newValue.length === unit.total) {
         setValue([])
       } else {
-        console.log(newValue)
+        // console.log(newValue)
         setValue(newValue)
       }
     },
@@ -153,7 +151,7 @@ export default function CustomSelect(props: CustomSelectProps) {
       let newValue = newValueOption.map(Number)
       newValue.sort((a, b) => a - b)
       setValue(newValue)
-      console.log(newValue)
+      // console.log(newValue)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setValue, value]
@@ -195,7 +193,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   const clicksRef = useRef<Clicks[]>([])
   const onOptionClick = useCallback(
     (newValueOption: string) => {
-      console.log(newValueOption)
+      // console.log(newValueOption)
       if (!readOnly) {
         const doubleClickTimeout = 300
         const clicks = clicksRef.current
@@ -278,50 +276,11 @@ export default function CustomSelect(props: CustomSelectProps) {
 
   return (
     <>
-      {/* {console.log(stringValue)} */}
-      {/* <Select<string[] | undefined>
-        // Use 'multiple' instead of 'tags‘ mode
-        // cf: Issue #2
-        mode={
-          mode === 'single' && !periodicityOnDoubleClick
-            ? undefined
-            : 'multiple'
-        }
-        allowClear={!readOnly}
-        virtual={false}
-        open={readOnly ? false : undefined}
-        value={stringValue}
-        onClear={onClear}
-        tagRender={renderTag}
-        className={internalClassName}
-        dropdownClassName={dropdownClassNames}
-        options={options}
-        showSearch={false}
-        showArrow={!readOnly}
-        menuItemSelectedIcon={null}
-        dropdownMatchSelectWidth={false}
-        onSelect={onOptionClick}
-        onDeselect={onOptionClick}
-        disabled={disabled}
-        dropdownAlign={
-          (unit.type === 'minutes' || unit.type === 'hours') &&
-          period !== 'day' &&
-          period !== 'hour'
-            ? {
-                // Usage: https://github.com/yiminghe/dom-align
-                // Set direction to left to prevent dropdown to overlap window
-                points: ['tr', 'br'],
-              }
-            : undefined
-        }
-        data-testid={`custom-select-${unit.type}`}
-        {...otherProps}
-      /> */}
-      {console.log(otherProps.placeholder)}
       <MultiSelect
-        ml={5}
         data={options}
         value={stringValue}
+        disabled={disabled}
+        sx={{ width: '100%' }}
         // rightSection={<IconChevronDown size={14} />}
         styles={{ rightSection: { pointerEvents: 'none' } }}
         rightSectionWidth={40}

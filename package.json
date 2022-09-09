@@ -1,6 +1,6 @@
 {
   "name": "react-js-cron-mantine",
-  "version": "2.1.0",
+  "version": "2.1.14",
   "description": "Fork of [react-js-cron](https://github.com/xrutayisire/react-js-cron), made to work with [mantine](https://mantine.dev)",
   "license": "MIT",
   "keywords": [
@@ -103,7 +103,6 @@
     "@types/testing-library__jest-dom": "5.14.5",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
-    "antd": "4.21.3",
     "babel-loader": "8.2.5",
     "babel-plugin-react-remove-properties": "0.3.0",
     "babel-plugin-transform-es2015-modules-umd": "6.24.1",
@@ -123,6 +122,12 @@
     "require-from-string": "^2.0.2",
     "typescript": "4.7.4",
     "webpack": "^2.0.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@mantine/core": "^5.1.6",
+    "@mantine/form": "^5.1.6",
+    "@mantine/hooks": "^5.1.6"
   },
   "jest": {
     "collectCoverageFrom": [

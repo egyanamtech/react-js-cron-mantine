@@ -5,6 +5,7 @@ import CustomSelect from '../components/CustomSelect'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function WeekDays(props: WeekDaysProps) {
   const {
@@ -60,10 +61,13 @@ export default function WeekDays(props: WeekDaysProps) {
     ((!monthDays || monthDays.length === 0) && (!value || value.length === 0))
 
   return displayWeekDays ? (
-    <div className={internalClassName}>
+    <div
+      style={{ display: 'flex', alignItems: 'baseline' }}
+      // className={internalClassName}
+    >
       {locale.prefixWeekDays !== '' &&
         (period === 'week' || !monthDaysIsDisplayed) && (
-          <span>
+          <span style={{ marginRight: '5px' }}>
             {locale.prefixWeekDays || DEFAULT_LOCALE_EN.prefixWeekDays}
           </span>
         )}
@@ -71,7 +75,7 @@ export default function WeekDays(props: WeekDaysProps) {
       {locale.prefixWeekDaysForMonthAndYearPeriod !== '' &&
         period !== 'week' &&
         monthDaysIsDisplayed && (
-          <span>
+          <span style={{ marginRight: '5px' }}>
             {locale.prefixWeekDaysForMonthAndYearPeriod ||
               DEFAULT_LOCALE_EN.prefixWeekDaysForMonthAndYearPeriod}
           </span>

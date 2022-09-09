@@ -5,6 +5,7 @@ import { HoursProps } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function Hours(props: HoursProps) {
   const {
@@ -32,9 +33,12 @@ export default function Hours(props: HoursProps) {
   )
 
   return (
-    <div className={internalClassName}>
+    // <div className={internalClassName}>
+    <div style={{ display: 'flex', alignItems: 'baseline' }}>
       {locale.prefixHours !== '' && (
-        <span>{locale.prefixHours || DEFAULT_LOCALE_EN.prefixHours}</span>
+        <span style={{ marginRight: '5px' }}>
+          {locale.prefixHours || DEFAULT_LOCALE_EN.prefixHours}
+        </span>
       )}
 
       <CustomSelect
@@ -53,5 +57,6 @@ export default function Hours(props: HoursProps) {
         mode={mode}
       />
     </div>
+    // </div>
   )
 }

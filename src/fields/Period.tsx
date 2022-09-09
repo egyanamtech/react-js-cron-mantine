@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
-// import { BaseOptionType } from 'antd/lib/select'
 
 import { PeriodProps, PeriodType } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
-import { Select } from '@mantine/core'
+import { Group, Select } from '@mantine/core'
 
 export default function Period(props: PeriodProps) {
   const {
@@ -118,11 +117,14 @@ export default function Period(props: PeriodProps) {
   )
 
   return (
-    <div className={internalClassName}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {locale.prefixPeriod !== '' && (
-        <span>{locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}</span>
+        <span style={{ marginRight: '5px' }}>
+          {locale.prefixPeriod || DEFAULT_LOCALE_EN.prefixPeriod}
+        </span>
       )}
       <Select
+        sx={{ width: '100%' }}
         ml={5}
         key={JSON.stringify(locale)}
         // defaultValue={value}
@@ -131,7 +133,7 @@ export default function Period(props: PeriodProps) {
         data={options}
         // className={selectClassName}
         // dropdownClassName={dropdownClassName}
-        // disabled={disabled}
+        disabled={disabled}
         // showArrow={!readOnly}
         // open={readOnly ? false : undefined}
         // data-testid='select-period'

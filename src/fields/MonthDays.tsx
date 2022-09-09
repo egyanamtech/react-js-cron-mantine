@@ -5,6 +5,7 @@ import { MonthDaysProps } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function MonthDays(props: MonthDaysProps) {
   const {
@@ -53,9 +54,12 @@ export default function MonthDays(props: MonthDaysProps) {
     ((!value || value.length === 0) && (!weekDays || weekDays.length === 0))
 
   return displayMonthDays ? (
-    <div className={internalClassName}>
+    <div
+      style={{ display: 'flex', alignItems: 'baseline' }}
+      // className={internalClassName}
+    >
       {locale.prefixMonthDays !== '' && (
-        <span>
+        <span style={{ marginRight: '5px' }}>
           {locale.prefixMonthDays || DEFAULT_LOCALE_EN.prefixMonthDays}
         </span>
       )}

@@ -5,6 +5,7 @@ import { MinutesProps } from '../types'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function Minutes(props: MinutesProps) {
   const {
@@ -32,16 +33,16 @@ export default function Minutes(props: MinutesProps) {
   )
 
   return (
-    <div className={internalClassName}>
+    <div style={{ display: 'flex', alignItems: 'baseline' }}>
       {period === 'hour'
         ? locale.prefixMinutesForHourPeriod !== '' && (
-            <span>
+            <span style={{ marginRight: '5px' }}>
               {locale.prefixMinutesForHourPeriod ||
                 DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
             </span>
           )
         : locale.prefixMinutes !== '' && (
-            <span>
+            <span style={{ marginRight: '5px' }}>
               {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
             </span>
           )}

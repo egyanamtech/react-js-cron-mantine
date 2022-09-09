@@ -4,12 +4,16 @@ import {
   Input as AntdInput,
   Divider,
   Table,
-  Form,
   Radio,
   Switch,
   Button,
   Select,
-} from 'antd'
+  MultiSelect,
+  Group,
+  TextInput,
+  SegmentedControl,
+  SimpleGrid,
+} from '@mantine/core'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
 import Cron, { CronError, AllowEmpty, ClockFormat, PeriodType } from '../index'
@@ -36,29 +40,7 @@ export function Demo() {
 
   return (
     <div>
-      <AntdInput
-        value={values.inputValue}
-        onChange={(event) => {
-          dispatchValues({
-            type: 'set_input_value',
-            value: event.target.value,
-          })
-        }}
-        onBlur={() => {
-          dispatchValues({
-            type: 'set_cron_value',
-            value: values.inputValue,
-          })
-        }}
-        onPressEnter={() => {
-          dispatchValues({
-            type: 'set_cron_value',
-            value: values.inputValue,
-          })
-        }}
-      />
-
-      <Divider>OR</Divider>
+      {/* <Divider>OR</Divider> */}
 
       <Cron
         value={values.cronValue}
@@ -88,6 +70,7 @@ export function Demo() {
 
 export function DynamicSettings() {
   const [displayInput, setDisplayInput] = useState<boolean>(true)
+  const [ConvertToTimezone, setConvertTimezone] = useState<boolean>(false)
   const [changeValueOnBlur, setChangeValueOnBlur] = useState<boolean>(true)
   const [changeValueOnEnter, setChangeValueOnEnter] = useState<boolean>(true)
   const [readOnlyInput, setReadOnlyInput] = useState<boolean>(false)
@@ -103,9 +86,8 @@ export function DynamicSettings() {
   const [customStyle, setCustomStyle] = useState<boolean>(false)
   const [allowEmpty, setAllowEmpty] = useState<AllowEmpty>('for-default-value')
   const [clockFormat, setClockFormat] = useState<ClockFormat | ''>('')
-  const [locale, setLocale] = useState<
-    'english' | 'french' | 'english-variant'
-  >('english')
+  const [Inputvalue, setInputValue] = useState('UTC')
+  const [locale, setLocale] = useState<string>('english')
   const [defaultPeriod, setDefaultPeriod] = useState<PeriodType>('day')
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('day')
   const [defaultValue, setDefaultValue] = useState('@daily')
@@ -167,178 +149,133 @@ export function DynamicSettings() {
 
     return newLocale
   }, [locale, removePrefixSuffix])
-
+  const [value, setValue] = useState('react')
   return (
     <div>
-      <Form layout='inline' className='demo-dynamic-settings'>
-        <Form.Item label='Display input'>
-          <Switch
-            checked={displayInput}
-            onChange={() => setDisplayInput((prevValue) => !prevValue)}
+      {/* <Form layout='inline' className='demo-dynamic-settings'> */}
+      <Group className='demo-dynamic-settings'>
+        <Switch
+          label='Display input'
+          checked={displayInput}
+          onChange={() => setDisplayInput((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Convert To Timezone'
+          checked={ConvertToTimezone}
+          onChange={() => setConvertTimezone((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Disabled'
+          checked={disabled}
+          onChange={() => setDisabled((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Display error text'
+          checked={displayErrorText}
+          onChange={() => setDisplayErrorText((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Humainze labels'
+          checked={humanizeLabels}
+          onChange={() => setHumanizeLabels((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Humanize value'
+          checked={humanizeValue}
+          onChange={() => setHumanizeValue((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Support shortcuts'
+          checked={supportShortcuts}
+          onChange={() => setSupportShortcuts((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Display error style'
+          checked={displayErrorStyle}
+          onChange={() => setDisplayErrorStyle((prevValue) => !prevValue)}
+        />
+
+        <Switch
+          label='Display clear button'
+          checked={displayClearButton}
+          onChange={() => setDisplayClearButton((prevValue) => !prevValue)}
+        />
+        <Switch
+          label='Remove prefix/suffix'
+          checked={removePrefixSuffix}
+          onChange={() => setRemovePrefixSuffix((prevValue) => !prevValue)}
+        />
+
+        <Switch
+          label='Set custom style'
+          checked={customStyle}
+          onChange={() => setCustomStyle((prevValue) => !prevValue)}
+        />
+
+        <Switch
+          label='Leading zero'
+          checked={leadingZero}
+          onChange={() => setLeadingZero((prevValue) => !prevValue)}
+        />
+        <Radio.Group
+          value={clockFormat}
+          onChange={setClockFormat}
+          label='Clock Format'
+        >
+          <Radio value='' label='None' />
+          <Radio value='12-hour-clock' label='12-hour-clock' />
+          <Radio value='24-hour-clock' label='24-hour-clock' />
+        </Radio.Group>
+
+        <Radio.Group label='Locale' value={locale} onChange={setLocale}>
+          <Radio value='english' label='English' />
+          <Radio value='french' label='French' />
+          <Radio value='english-variant' label="'English variant" />
+        </Radio.Group>
+        <Radio.Group
+          label='Clear Button Action'
+          value={clearButtonAction}
+          onChange={setClearButtonAction}
+        >
+          <Radio value='empty' label='Empty' />
+          <Radio value='fill-with-every' label='Fill with Every' />
+        </Radio.Group>
+        <SimpleGrid
+          breakpoints={[
+            { maxWidth: 980, cols: 2, spacing: 'md' },
+            { maxWidth: 755, cols: 1, spacing: 'sm' },
+            { maxWidth: 600, cols: 1, spacing: 'sm' },
+          ]}
+          cols={2}
+        >
+          <MultiSelect
+            data={allowedDropdowns}
+            label='Allowed Dropdowns'
+            placeholder='Pick all that you like'
+            defaultValue={defaultAllowedDropdowns}
+            clearButtonLabel='Clear selection'
+            style={{ minWidth: 435 }}
+            clearable
+            onChange={setAllowedDropdowns}
           />
-        </Form.Item>
-        <Form.Item label='Change input value on blur'>
-          <Switch
-            checked={changeValueOnBlur}
-            onChange={() => setChangeValueOnBlur((prevValue) => !prevValue)}
+
+          <MultiSelect
+            data={allowedPeriods}
+            onChange={setAllowedPeriods}
+            label='Allowed Periods'
+            placeholder='Pick all that you like'
+            defaultValue={defaultAllowedPeriods}
+            clearButtonLabel='Clear selection'
+            style={{ minWidth: 435 }}
+            clearable
           />
-        </Form.Item>
-        <Form.Item label='Change input value on enter'>
-          <Switch
-            checked={changeValueOnEnter}
-            onChange={() => setChangeValueOnEnter((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Read-Only input'>
-          <Switch
-            checked={readOnlyInput}
-            onChange={() => setReadOnlyInput((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Disabled'>
-          <Switch
-            checked={disabled}
-            onChange={() => setDisabled((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Read-Only'>
-          <Switch
-            checked={readOnly}
-            onChange={() => setReadOnly((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Humainze labels'>
-          <Switch
-            checked={humanizeLabels}
-            onChange={() => setHumanizeLabels((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Humanize value'>
-          <Switch
-            checked={humanizeValue}
-            onChange={() => setHumanizeValue((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Display error text'>
-          <Switch
-            checked={displayErrorText}
-            onChange={() => setDisplayErrorText((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Display error style'>
-          <Switch
-            checked={displayErrorStyle}
-            onChange={() => setDisplayErrorStyle((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Display clear button'>
-          <Switch
-            checked={displayClearButton}
-            onChange={() => setDisplayClearButton((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Support shortcuts'>
-          <Switch
-            checked={supportShortcuts}
-            onChange={() => setSupportShortcuts((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Remove prefix/suffix'>
-          <Switch
-            checked={removePrefixSuffix}
-            onChange={() => setRemovePrefixSuffix((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Set custom style'>
-          <Switch
-            checked={customStyle}
-            onChange={() => setCustomStyle((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Leading zero'>
-          <Switch
-            checked={leadingZero}
-            onChange={() => setLeadingZero((prevValue) => !prevValue)}
-          />
-        </Form.Item>
-        <Form.Item label='Periodicity on double click'>
-          <Switch
-            checked={periodicityOnDoubleClick}
-            onChange={() =>
-              setPeriodicityOnDoubleClick((prevValue) => !prevValue)
-            }
-          />
-        </Form.Item>
-        <Form.Item label='Clock format'>
-          <Radio.Group
-            value={clockFormat}
-            onChange={(e) => setClockFormat(e.target.value)}
-          >
-            <Radio.Button value=''>None</Radio.Button>
-            <Radio.Button value='12-hour-clock'>12-hour clock</Radio.Button>
-            <Radio.Button value='24-hour-clock'>24-hour-clock</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label='Mode'>
-          <Radio.Group value={mode} onChange={(e) => setMode(e.target.value)}>
-            <Radio.Button value='single'>Single</Radio.Button>
-            <Radio.Button value='multiple'>Multiple</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label='Allowed dropdowns'>
-          <Select
-            mode='multiple'
-            value={allowedDropdowns}
-            onChange={(value) => {
-              setAllowedDropdowns(value)
-            }}
-            style={{ minWidth: 535 }}
-          >
-            {defaultAllowedDropdowns.map((allowedDropdown) => {
-              return (
-                <Select.Option key={allowedDropdown}>
-                  {allowedDropdown}
-                </Select.Option>
-              )
-            })}
-          </Select>
-        </Form.Item>
-        <Form.Item label='Allowed periods'>
-          <Select
-            mode='multiple'
-            value={allowedPeriods}
-            onChange={(value) => {
-              setAllowedPeriods(value)
-            }}
-            style={{ minWidth: 485 }}
-          >
-            {defaultAllowedPeriods.map((allowedPeriod) => {
-              return (
-                <Select.Option key={allowedPeriod}>
-                  {allowedPeriod}
-                </Select.Option>
-              )
-            })}
-          </Select>
-        </Form.Item>
-        <Form.Item label='Locale'>
-          <Radio.Group
-            value={locale}
-            onChange={(e) => setLocale(e.target.value)}
-          >
-            <Radio.Button value='english'>English</Radio.Button>
-            <Radio.Button value='french'>French</Radio.Button>
-            <Radio.Button value='english-variant'>English variant</Radio.Button>
-          </Radio.Group>
+        </SimpleGrid>
+      </Group>
+      {/* <Form.Item label='Locale'>
+        
         </Form.Item>
         <Form.Item label='Clear button action'>
-          <Radio.Group
-            value={clearButtonAction}
-            onChange={(e) => setClearButtonAction(e.target.value)}
-          >
-            <Radio.Button value='empty'>Empty</Radio.Button>
-            <Radio.Button value='fill-with-every'>Fill with every</Radio.Button>
-          </Radio.Group>
+         
         </Form.Item>
         <Form.Item label='Empty value management *'>
           <Radio.Group
@@ -371,19 +308,20 @@ export function DynamicSettings() {
             <Radio.Button value='minute'>Minute</Radio.Button>
             <Radio.Button value='reboot'>Reboot</Radio.Button>
           </Radio.Group>
-        </Form.Item>
-        <p>(*) Need to reset the component to see the changes</p>
-        <p>
-          (**) Need to reset the component and to have an empty default value to
-          see the changes
-        </p>
-      </Form>
+        </Form.Item> */}
+      <p>(*) Need to reset the component to see the changes</p>
+      <p>
+        (**) Need to reset the component and to have an empty default value to
+        see the changes
+      </p>
+      {/* </Form> */}
 
-      <div>
+      <Group position='right'>
         <p>Value: {values.cronValue}</p>
 
         <Button
-          type='primary'
+          compact
+          variant='outline'
           onClick={() => {
             dispatchValues({
               type: 'set_values',
@@ -395,9 +333,9 @@ export function DynamicSettings() {
         >
           Reset cron component
         </Button>
-      </div>
+      </Group>
 
-      {displayInput && (
+      {/* {displayInput && (
         <>
           <AntdInput
             readOnly={readOnlyInput || mode === 'single'}
@@ -424,9 +362,23 @@ export function DynamicSettings() {
             }}
           />
 
-          <Divider>OR</Divider>
-        </>
-      )}
+          </>
+        )} */}
+
+      {/* <Divider>OR</Divider> */}
+      {displayInput ? (
+        <TextInput
+          mb={10}
+          label='Convert to Timezone'
+          value={Inputvalue}
+          onChange={
+            (event) => setInputValue(event.currentTarget.value)
+            // event.target.value !== ''
+            //   ? setConvertUTC(false)
+            //   : setConvertUTC(false)
+          }
+        />
+      ) : null}
 
       <Cron
         key={key}
@@ -457,13 +409,15 @@ export function DynamicSettings() {
         allowedDropdowns={allowedDropdowns}
         allowedPeriods={allowedPeriods}
         locale={transformedLocale}
-        clearButtonProps={
-          customStyle
-            ? {
-                type: 'default',
-              }
-            : undefined
-        }
+        convertToTimezone={ConvertToTimezone}
+        timezone_value={Inputvalue}
+        // clearButtonProps={
+        //   customStyle
+        //     ? {
+        //         type: 'default',
+        //       }
+        //     : undefined
+        // }
       />
 
       <p style={{ marginTop: 20 }}>Selected period: {selectedPeriod}</p>
@@ -476,50 +430,50 @@ export function DynamicSettings() {
   )
 }
 
-export function Input() {
-  const defaultValue = ''
-  const [values, dispatchValues] = useCronReducer(defaultValue)
+// export function Input() {
+//   const defaultValue = ''
+//   const [values, dispatchValues] = useCronReducer(defaultValue)
 
-  return (
-    <div>
-      <AntdInput
-        value={values.inputValue}
-        onChange={(event) => {
-          dispatchValues({
-            type: 'set_input_value',
-            value: event.target.value,
-          })
-        }}
-        onBlur={() => {
-          dispatchValues({
-            type: 'set_cron_value',
-            value: values.inputValue,
-          })
-        }}
-      />
+//   return (
+//     <div>
+//       {/* <AntdInput
+//         value={values.inputValue}
+//         onChange={(event) => {
+//           dispatchValues({
+//             type: 'set_input_value',
+//             value: event.target.value,
+//           })
+//         }}
+//         onBlur={() => {
+//           dispatchValues({
+//             type: 'set_cron_value',
+//             value: values.inputValue,
+//           })
+//         }}
+//       /> */}
 
-      <div style={{ marginTop: 10 }}>
-        <InfoCircleOutlined style={{ marginRight: 5 }} />
-        <span style={{ fontSize: 12 }}>
-          The &quot;onBlur&quot; event must be used instead of
-          &quot;onChange&quot; to prevent a value change from the cron component
-        </span>
-      </div>
+//       <div style={{ marginTop: 10 }}>
+//         <InfoCircleOutlined style={{ marginRight: 5 }} />
+//         <span style={{ fontSize: 12 }}>
+//           The &quot;onBlur&quot; event must be used instead of
+//           &quot;onChange&quot; to prevent a value change from the cron component
+//         </span>
+//       </div>
 
-      <Divider>OR</Divider>
+//       <Divider>OR</Divider>
 
-      <Cron
-        value={values.cronValue}
-        setValue={(newValue: string) => {
-          dispatchValues({
-            type: 'set_values',
-            value: newValue,
-          })
-        }}
-      />
-    </div>
-  )
-}
+//       <Cron
+//         value={values.cronValue}
+//         setValue={(newValue: string) => {
+//           dispatchValues({
+//             type: 'set_values',
+//             value: newValue,
+//           })
+//         }}
+//       />
+//     </div>
+//   )
+// }
 
 export function InputWithOnEnter() {
   const defaultValue = '0 10 * * 1,3,5'
@@ -527,7 +481,7 @@ export function InputWithOnEnter() {
 
   return (
     <div>
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -547,7 +501,7 @@ export function InputWithOnEnter() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
       <div style={{ marginTop: 10 }}>
         <InfoCircleOutlined style={{ marginRight: 5 }} />
         <span style={{ fontSize: 12 }}>
@@ -574,7 +528,7 @@ export function ReadOnlyInput() {
 
   return (
     <div>
-      <AntdInput readOnly value={value} />
+      {/* <AntdInput readOnly value={value} /> */}
 
       <Divider>OR</Divider>
 
@@ -689,7 +643,7 @@ export function HumanizeLabels() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -703,7 +657,7 @@ export function HumanizeLabels() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -761,7 +715,7 @@ export function HumanizeValue() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -775,7 +729,7 @@ export function HumanizeValue() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -848,7 +802,7 @@ export function HumanizeLabelsAndValue() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -862,7 +816,7 @@ export function HumanizeLabelsAndValue() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -903,7 +857,7 @@ export function LeadingZero() {
       <p>Leading zero: &quot;always&quot;</p>
       <p>Value: {values.cronValue}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -917,7 +871,7 @@ export function LeadingZero() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -959,7 +913,7 @@ export function TrackError() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -973,7 +927,7 @@ export function TrackError() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <div style={{ marginTop: 10 }}>
         <InfoCircleOutlined style={{ marginRight: 5 }} />
@@ -1017,7 +971,7 @@ export function DisableErrorStyle() {
       <p>Display error: false</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1031,7 +985,7 @@ export function DisableErrorStyle() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1127,7 +1081,7 @@ export function EmptyNeverAllowed() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1141,7 +1095,7 @@ export function EmptyNeverAllowed() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1180,7 +1134,7 @@ export function EmptyAlwaysAllowed() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1194,7 +1148,7 @@ export function EmptyAlwaysAllowed() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1287,7 +1241,7 @@ export function Shortcuts() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1301,7 +1255,7 @@ export function Shortcuts() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1332,15 +1286,15 @@ export function Shortcuts() {
         </span>
       </div>
 
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={data}
         showHeader={false}
         bordered
         pagination={false}
         style={{ marginTop: 20 }}
-        title={() => <h3>Supported shortcuts</h3>}
-      />
+        // title={() => <h3>Supported shortcuts</h3>}
+      /> */}
     </div>
   )
 }
@@ -1357,7 +1311,7 @@ export function TwelveHourClock() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1371,7 +1325,7 @@ export function TwelveHourClock() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1402,7 +1356,7 @@ export function TwentyFourHourClock() {
       <p>Value: {values.cronValue}</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1416,7 +1370,7 @@ export function TwentyFourHourClock() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1610,7 +1564,7 @@ export function FrenchLocale() {
       <p>Erreur: {error ? error.description : 'undefined'}</p>
       <p>Value: {values.cronValue}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1624,7 +1578,7 @@ export function FrenchLocale() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OU</Divider>
 
@@ -1718,7 +1672,7 @@ export function CustomStyle() {
       <p>clearButtonProps: &#123; type: &quot;default&quot; &#125;</p>
       <p>Error: {error ? error.description : 'undefined'}</p>
 
-      <AntdInput
+      {/* <AntdInput
         value={values.inputValue}
         onChange={(event) => {
           dispatchValues({
@@ -1732,7 +1686,7 @@ export function CustomStyle() {
             value: values.inputValue,
           })
         }}
-      />
+      /> */}
 
       <Divider>OR</Divider>
 
@@ -1746,9 +1700,6 @@ export function CustomStyle() {
         }}
         onError={onError}
         className='my-project-cron'
-        clearButtonProps={{
-          type: 'default',
-        }}
       />
 
       <div>

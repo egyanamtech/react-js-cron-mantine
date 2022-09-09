@@ -1,6 +1,4 @@
-import { SelectProps } from 'antd/lib/select'
 import { Dispatch, SetStateAction } from 'react'
-import { ButtonProps } from 'antd/lib/button'
 
 // External props
 
@@ -94,11 +92,21 @@ export interface CronProps {
    * Default: true
    */
   clearButton?: boolean
-
+  /**
+   * Display the convertToTimezone.
+   *
+   * Default: false
+   */
+  convertToTimezone?: boolean
+  /**
+   * Display the timezone_value.
+   *
+   * Default: "UTC"
+   */
+  timezone_value?: string
   /**
    * antd button props to customize the clear button.
    */
-  clearButtonProps?: ClearButtonProps
 
   /**
    * Define the clear button action.
@@ -144,14 +152,14 @@ export interface CronProps {
   /**
    * Define which dropdowns need to be displayed.
    *
-   * Default: ['period', 'months', 'month-days', 'week-days', 'hours', 'minutes']
+   * Default: ['period', 'months', 'month-days', 'week-days', 'hours', 'minutes',switch]
    */
   allowedDropdowns?: CronType[]
 
   /**
    * Define the list of periods available.
    *
-   * Default: ['year', 'month', 'week', 'day', 'hour', 'minute', 'reboot']
+  //  * Default: ['year', 'month', 'week', 'day', 'hour', 'minute', 'reboot',"switch"]
    */
   allowedPeriods?: PeriodType[]
 
@@ -221,8 +229,10 @@ export type OnError =
   | OnErrorFunction
   | Dispatch<SetStateAction<CronError>>
   | undefined
-export interface ClearButtonProps extends Omit<ButtonProps, 'onClick'> {}
-export type ClearButtonAction = 'empty' | 'fill-with-every'
+export interface ClearButtonProps {
+  className: string | undefined
+}
+export type ClearButtonAction = 'empty' | 'fill-with-every' | string
 export type PeriodType =
   | 'year'
   | 'month'
@@ -230,7 +240,10 @@ export type PeriodType =
   | 'day'
   | 'hour'
   | 'minute'
+  | 'switch'
   | 'reboot'
+  | string
+// export type PeriodTypeA = PeriodType | string
 export type AllowEmpty = 'always' | 'never' | 'for-default-value'
 export type CronType =
   | 'period'
@@ -239,9 +252,12 @@ export type CronType =
   | 'week-days'
   | 'hours'
   | 'minutes'
+  | 'switch'
+  | string
+
 export type LeadingZeroType = 'month-days' | 'hours' | 'minutes'
 export type LeadingZero = boolean | LeadingZeroType[]
-export type ClockFormat = '24-hour-clock' | '12-hour-clock'
+export type ClockFormat = '24-hour-clock' | '12-hour-clock' | string
 export type ShortcutsType =
   | '@yearly'
   | '@annually'
@@ -296,25 +312,9 @@ export interface MinutesProps extends FieldProps {
   leadingZero: LeadingZero
   clockFormat?: ClockFormat
 }
-export interface CustomSelectProps
-  extends Omit<
-    SelectProps<any>,
-    | 'mode'
-    | 'tokenSeparators'
-    | 'allowClear'
-    | 'virtual'
-    | 'onClick'
-    | 'onBlur'
-    | 'tagRender'
-    | 'dropdownRender'
-    | 'showSearch'
-    | 'showArrow'
-    | 'onChange'
-    | 'dropdownMatchSelectWidth'
-    | 'options'
-    | 'onSelect'
-    | 'onDeselect'
-  > {
+export interface CustomSelectProps {
+  className: string | undefined
+  placeholder: string
   grid?: boolean
   setValue: SetValueNumbersOrUndefined
   optionsList?: string[]

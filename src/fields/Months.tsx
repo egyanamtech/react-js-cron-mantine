@@ -5,6 +5,7 @@ import CustomSelect from '../components/CustomSelect'
 import { DEFAULT_LOCALE_EN } from '../locale'
 import { classNames } from '../utils'
 import { UNITS } from '../constants'
+import { Group } from '@mantine/core'
 
 export default function Months(props: MonthsProps) {
   const {
@@ -33,9 +34,11 @@ export default function Months(props: MonthsProps) {
   )
 
   return (
-    <div className={internalClassName}>
+    <Group align='baseline' noWrap>
       {locale.prefixMonths !== '' && (
-        <span>{locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}</span>
+        <span style={{ marginRight: '5px' }}>
+          {locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}
+        </span>
       )}
 
       <CustomSelect
@@ -59,6 +62,6 @@ export default function Months(props: MonthsProps) {
         periodicityOnDoubleClick={periodicityOnDoubleClick}
         mode={mode}
       />
-    </div>
+    </Group>
   )
 }
