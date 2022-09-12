@@ -124,6 +124,7 @@
     "webpack": "^2.0.0"
   },
   "dependencies": {
+    "dayjs": "^1.0.0",
     "@emotion/react": "^11.9.3",
     "@mantine/core": "^5.1.6",
     "@mantine/form": "^5.1.6",
