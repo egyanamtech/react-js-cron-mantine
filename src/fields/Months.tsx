@@ -35,13 +35,17 @@ export default function Months(props: MonthsProps) {
 
   return (
     <Group align='baseline' noWrap>
-      {locale.prefixMonths !== '' && (
+      {/* {locale.prefixMonths !== '' && (
         <span style={{ marginRight: '5px' }}>
           {locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths}
         </span>
-      )}
+      )} */}
 
       <CustomSelect
+        labelText={
+          locale.prefixMonths !== '' &&
+          (locale.prefixMonths || DEFAULT_LOCALE_EN.prefixMonths)
+        }
         placeholder={locale.emptyMonths || DEFAULT_LOCALE_EN.emptyMonths}
         optionsList={optionsList}
         grid={false}

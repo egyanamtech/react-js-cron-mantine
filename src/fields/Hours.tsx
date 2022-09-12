@@ -35,13 +35,11 @@ export default function Hours(props: HoursProps) {
   return (
     // <div className={internalClassName}>
     <div style={{ display: 'flex', alignItems: 'baseline' }}>
-      {locale.prefixHours !== '' && (
-        <span style={{ marginRight: '5px' }}>
-          {locale.prefixHours || DEFAULT_LOCALE_EN.prefixHours}
-        </span>
-      )}
-
       <CustomSelect
+        labelText={
+          locale.prefixHours !== '' &&
+          (locale.prefixHours || DEFAULT_LOCALE_EN.prefixHours)
+        }
         placeholder={locale.emptyHours || DEFAULT_LOCALE_EN.emptyHours}
         value={value}
         unit={UNITS[1]}
