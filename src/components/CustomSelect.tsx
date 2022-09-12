@@ -18,6 +18,7 @@ export default function CustomSelect(props: CustomSelectProps) {
   const {
     value,
     grid = true,
+    labelText,
     optionsList,
     setValue,
     locale,
@@ -277,6 +278,8 @@ export default function CustomSelect(props: CustomSelectProps) {
   return (
     <>
       <MultiSelect
+        withinPortal
+        label={labelText}
         data={options}
         value={stringValue}
         disabled={disabled}

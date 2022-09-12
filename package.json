@@ -1,6 +1,6 @@
 {
   "name": "react-js-cron-mantine",
-  "version": "2.1.14",
+  "version": "2.1.16",
   "description": "Fork of [react-js-cron](https://github.com/xrutayisire/react-js-cron), made to work with [mantine](https://mantine.dev)",
   "license": "MIT",
   "keywords": [

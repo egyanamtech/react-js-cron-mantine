@@ -320,6 +320,7 @@ export interface CustomSelectProps {
   optionsList?: string[]
   locale: Locale
   value?: number[]
+  labelText?: string | boolean
   humanizeLabels?: boolean
   disabled: boolean
   readOnly: boolean

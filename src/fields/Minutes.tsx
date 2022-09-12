@@ -34,20 +34,11 @@ export default function Minutes(props: MinutesProps) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'baseline' }}>
-      {period === 'hour'
-        ? locale.prefixMinutesForHourPeriod !== '' && (
-            <span style={{ marginRight: '5px' }}>
-              {locale.prefixMinutesForHourPeriod ||
-                DEFAULT_LOCALE_EN.prefixMinutesForHourPeriod}
-            </span>
-          )
-        : locale.prefixMinutes !== '' && (
-            <span style={{ marginRight: '5px' }}>
-              {locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes}
-            </span>
-          )}
-
       <CustomSelect
+        labelText={
+          locale.prefixMinutes !== '' &&
+          (locale.prefixMinutes || DEFAULT_LOCALE_EN.prefixMinutes)
+        }
         placeholder={
           period === 'hour'
             ? locale.emptyMinutesForHourPeriod ||
@@ -68,12 +59,12 @@ export default function Minutes(props: MinutesProps) {
         mode={mode}
       />
 
-      {period === 'hour' && locale.suffixMinutesForHourPeriod !== '' && (
+      {/* {period === 'hour' && locale.suffixMinutesForHourPeriod !== '' && (
         <span>
           {locale.suffixMinutesForHourPeriod ||
             DEFAULT_LOCALE_EN.suffixMinutesForHourPeriod}
         </span>
-      )}
+      )} */}
     </div>
   )
 }

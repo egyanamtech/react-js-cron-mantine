@@ -18,7 +18,6 @@ import tz from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import { Switch, Text } from '@mantine/core'
 export default function Cron(props: CronProps) {
-  console.log(props.allowedDropdowns)
   const {
     timezone_value = 'UTC',
     clearButton = true,
@@ -68,7 +67,6 @@ export default function Cron(props: CronProps) {
       'reboot',
     ],
   } = props
-  console.log(timezone_value)
   const internalValueRef = useRef<string>(value)
   const defaultPeriodRef = useRef<PeriodType>(defaultPeriod)
   const [period, setPeriod] = useState<PeriodType | undefined>()
@@ -154,7 +152,6 @@ export default function Cron(props: CronProps) {
         !valueCleared &&
         !previousValueCleared
       ) {
-        console.log({ convertToTimezone })
         const selectedPeriod = period || defaultPeriodRef.current
         const cron = getCronStringFromValues(
           selectedPeriod,
@@ -306,7 +303,7 @@ export default function Cron(props: CronProps) {
     const hourarr: number[] = []
     const minutearr: number[] = []
     //the below code handles timezone string value and converts to input timezone
-    console.log(convertToTimezone)
+
     if (convertToTimezone == true) {
       try {
         /*Below code loops through hours and minutes  same hour or minutes is already present in
@@ -429,7 +426,6 @@ export default function Cron(props: CronProps) {
         // setError(onError, (locale.errorInvalidCron = err.message))
         // onError()
         // onError({type:"invalid_cron" ,description:err.message})
-        console.log(err.message)
       }
     } else {
       setTzError('')
@@ -444,124 +440,124 @@ export default function Cron(props: CronProps) {
     <>
       {/* <div className={internalClassName}> */}
       {/* <Group align='baseline'> */}
-      <Container>
-        <SimpleGrid
-          breakpoints={[
-            { maxWidth: 980, cols: 2, spacing: 'md' },
-            { maxWidth: 755, cols: 2, spacing: 'sm' },
-            { maxWidth: 600, cols: 1, spacing: 'sm' },
-          ]}
-          mb={10}
-          cols={2}
-        >
-          {' '}
-          {allowedDropdowns.includes('period') && (
-            <Period
-              value={periodForRender}
-              setValue={setPeriod}
-              locale={locale}
-              className={className}
-              disabled={disabled}
-              readOnly={readOnly}
-              shortcuts={shortcuts}
-              allowedPeriods={allowedPeriods}
-            />
-          )}
-          {periodForRender === 'reboot' ? (
-            clearButtonNode
-          ) : (
-            <>
-              {periodForRender === 'year' &&
-                allowedDropdowns.includes('months') && (
-                  <Months
-                    value={months}
-                    setValue={setMonths}
-                    locale={locale}
-                    className={className}
-                    humanizeLabels={humanizeLabels}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
 
-              {(periodForRender === 'year' || periodForRender === 'month') &&
-                allowedDropdowns.includes('month-days') && (
-                  <MonthDays
-                    value={monthDays}
-                    setValue={setMonthDays}
-                    locale={locale}
-                    className={className}
-                    weekDays={weekDays}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    leadingZero={leadingZero}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+      <SimpleGrid
+        breakpoints={[
+          { maxWidth: 980, cols: 2, spacing: 'md' },
+          { maxWidth: 755, cols: 2, spacing: 'sm' },
+          { maxWidth: 600, cols: 1, spacing: 'sm' },
+        ]}
+        mb={10}
+        cols={2}
+      >
+        {' '}
+        {allowedDropdowns.includes('period') && (
+          <Period
+            value={periodForRender}
+            setValue={setPeriod}
+            locale={locale}
+            className={className}
+            disabled={disabled}
+            readOnly={readOnly}
+            shortcuts={shortcuts}
+            allowedPeriods={allowedPeriods}
+          />
+        )}
+        {periodForRender === 'reboot' ? (
+          clearButtonNode
+        ) : (
+          <>
+            {periodForRender === 'year' &&
+              allowedDropdowns.includes('months') && (
+                <Months
+                  value={months}
+                  setValue={setMonths}
+                  locale={locale}
+                  className={className}
+                  humanizeLabels={humanizeLabels}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-              {(periodForRender === 'year' ||
-                periodForRender === 'month' ||
-                periodForRender === 'week') &&
-                allowedDropdowns.includes('week-days') && (
-                  <WeekDays
-                    value={weekDays}
-                    setValue={setWeekDays}
-                    locale={locale}
-                    className={className}
-                    humanizeLabels={humanizeLabels}
-                    monthDays={monthDays}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+            {(periodForRender === 'year' || periodForRender === 'month') &&
+              allowedDropdowns.includes('month-days') && (
+                <MonthDays
+                  value={monthDays}
+                  setValue={setMonthDays}
+                  locale={locale}
+                  className={className}
+                  weekDays={weekDays}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-              {periodForRender !== 'minute' &&
-                periodForRender !== 'hour' &&
-                allowedDropdowns.includes('hours') && (
-                  <Hours
-                    value={hours}
-                    setValue={setHours}
-                    locale={locale}
-                    className={className}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    leadingZero={leadingZero}
-                    clockFormat={clockFormat}
-                    period={periodForRender}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
+            {(periodForRender === 'year' ||
+              periodForRender === 'month' ||
+              periodForRender === 'week') &&
+              allowedDropdowns.includes('week-days') && (
+                <WeekDays
+                  value={weekDays}
+                  setValue={setWeekDays}
+                  locale={locale}
+                  className={className}
+                  humanizeLabels={humanizeLabels}
+                  monthDays={monthDays}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
 
-              {periodForRender !== 'minute' &&
-                allowedDropdowns.includes('minutes') && (
-                  <Minutes
-                    value={minutes}
-                    setValue={setMinutes}
-                    locale={locale}
-                    period={periodForRender}
-                    className={className}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    leadingZero={leadingZero}
-                    clockFormat={clockFormat}
-                    periodicityOnDoubleClick={periodicityOnDoubleClick}
-                    mode={mode}
-                  />
-                )}
-            </>
-          )}
-        </SimpleGrid>
-        <div style={{ float: 'right' }}>{clearButtonNode}</div>
-      </Container>
+            {periodForRender !== 'minute' &&
+              periodForRender !== 'hour' &&
+              allowedDropdowns.includes('hours') && (
+                <Hours
+                  value={hours}
+                  setValue={setHours}
+                  locale={locale}
+                  className={className}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  clockFormat={clockFormat}
+                  period={periodForRender}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
+
+            {periodForRender !== 'minute' &&
+              allowedDropdowns.includes('minutes') && (
+                <Minutes
+                  value={minutes}
+                  setValue={setMinutes}
+                  locale={locale}
+                  period={periodForRender}
+                  className={className}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  leadingZero={leadingZero}
+                  clockFormat={clockFormat}
+                  periodicityOnDoubleClick={periodicityOnDoubleClick}
+                  mode={mode}
+                />
+              )}
+          </>
+        )}
+      </SimpleGrid>
+      <div style={{ float: 'right' }}>{clearButtonNode}</div>
+
       {/* </div> */}
     </>
   )
