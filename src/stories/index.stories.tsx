@@ -39,7 +39,6 @@ export function Demo() {
   const [error, onError] = useState<CronError>()
   const [valuesobj, dispatchobjValues] = useState<CronObj | undefined>()
 
-  console.log({ valuesobj })
   return (
     <div>
       {/* <Divider>OR</Divider> */}
