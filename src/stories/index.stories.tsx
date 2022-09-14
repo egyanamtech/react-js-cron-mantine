@@ -23,7 +23,7 @@ import {
   NO_PREFIX_SUFFIX_LOCALE,
 } from './constants.stories'
 import { useCronReducer } from './utils.stories'
-import { ClearButtonAction, CronType, Mode } from '../types'
+import { ClearButtonAction, CronObj, CronType, Mode } from '../types'
 
 import '../styles.css'
 import './styles.stories.css'
@@ -37,7 +37,9 @@ export function Demo() {
   const defaultValue = '30 5 * * 1,6'
   const [values, dispatchValues] = useCronReducer(defaultValue)
   const [error, onError] = useState<CronError>()
+  const [valuesobj, dispatchobjValues] = useState<CronObj | undefined>()
 
+  console.log({ valuesobj })
   return (
     <div>
       {/* <Divider>OR</Divider> */}
@@ -50,6 +52,7 @@ export function Demo() {
             value: newValue,
           })
         }}
+        setValueObj={dispatchobjValues}
         onError={onError}
       />
 
