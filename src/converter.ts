@@ -14,6 +14,7 @@ import {
   Shortcuts,
   SetValueNumbersOrUndefined,
   SetValuePeriod,
+  SetValueObj,
 } from './types'
 
 /**
@@ -106,6 +107,7 @@ export function getCronStringFromValues(
   weekDays: number[] | undefined,
   hours: number[] | undefined,
   minutes: number[] | undefined,
+  setValueObj: SetValueObj | undefined,
   humanizeValue?: boolean
 ) {
   if (period === 'reboot') {
@@ -127,7 +129,20 @@ export function getCronStringFromValues(
     [newMinutes, newHours, newMonthDays, newMonths, newWeekDays],
     humanizeValue
   )
-
+  // console.log({
+  //   minute: parsedArray[0],
+  //   hour: parsedArray[1],
+  //   day_of_week: parsedArray[4],
+  //   day_of_month: parsedArray[2],
+  //   month_of_year: parsedArray[3],
+  // })
+  setValueObj?.({
+    minute: parsedArray[0],
+    hour: parsedArray[1],
+    day_of_week: parsedArray[4],
+    day_of_month: parsedArray[2],
+    month_of_year: parsedArray[3],
+  })
   return cronToString(parsedArray)
 }
 

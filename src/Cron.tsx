@@ -26,6 +26,7 @@ export default function Cron(props: CronProps) {
     locale = DEFAULT_LOCALE_EN,
     value = '',
     setValue,
+    setValueObj,
     displayError = true,
     onError,
     className,
@@ -160,7 +161,7 @@ export default function Cron(props: CronProps) {
           weekDays,
           convertToTimezone ? tzhours : hours,
           convertToTimezone ? tzminutes : minutes,
-
+          setValueObj,
           humanizeValue
         )
 
@@ -215,7 +216,8 @@ export default function Cron(props: CronProps) {
           undefined,
           undefined,
           undefined,
-          undefined
+          undefined,
+          setValueObj
         )
 
         newValue = cron

@@ -18,6 +18,7 @@ export interface CronProps {
    * required
    */
   setValue: SetValue
+  setValueObj?: SetValueObj
 
   /**
    * Set the container className and used as a prefix for other selectors.
@@ -218,6 +219,17 @@ export interface SetValueFunctionExtra {
   selectedPeriod: PeriodType
 }
 export type SetValue = SetValueFunction | Dispatch<SetStateAction<string>>
+export type SetValueObj = (obj: CronObj) => void
+
+export type CronObj =
+  | {
+      minute: string
+      hour: string
+      day_of_week: string
+      day_of_month: string
+      month_of_year: string
+    }
+  | undefined
 export type CronError =
   | {
       type: 'invalid_cron'
